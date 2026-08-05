@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta http-equiv="refresh" content="5">
+<title>MTS Demo</title>
+<style>
+  body { font-family: sans-serif; max-width: 600px; margin: 40px auto; }
+  .nav { display:flex; gap:10px; margin-bottom:20px; }
+  .nav a { padding:10px 20px; border:1px solid #333; background:#eee; color:#000; text-decoration:none; }
+  .nav a.active { background:#333; color:#fff; }
+  input, select { width:100%; padding:6px; }
+  table { width:100%; border-collapse:collapse; margin-top:15px; }
+  td, th { border:1px solid #ccc; padding:6px; }
+</style>
+</head>
+<body>
+
+  <div class="nav">
+    <a href="/" class="active">Assign (Stage 0)</a>
+    <a href="/station1">Factory Processing</a>
+  </div>
+
+  <h2>Assigned Bales</h2>
+  <table>
+    <tr><th>Tag ID (EPC)</th><th>TID</th><th>Bale #</th><th>Grade</th><th>Expected Weight (kg)</th><th>Farm</th><th>Actions</th></tr>
+    {% for t in tags %}
+    <tr>
+      <td>{{ t.tag_id }}</td><td>{{ t.tid or '' }}</td><td>{{ t.bale_number }}</td><td>{{ t.grade }}</td><td>{{ '%.2f'|format(t.expected_weight / 1000) }}</td><td>{{ t.farm }}</td>
+      <td>
+        <form method="POST" action="/delete_tag" style="margin:0;" onsubmit="return confirm('Delete this tag assignment?');">
+          <input type="hidden" name="tag_id" value="{{ t.tag_id }}">
+          <button type="submit" style="background:#c00; color:#fff; border:none; padding:4px 10px; cursor:pointer;">Delete</button>
+        </form>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+  {% if tags %}
+  <form method="POST" action="/clear_all_tags" style="margin-top:10px;" onsubmit="return confirm('Clear ALL assigned tags? This cannot be undone.');">
+    <button type="submit" style="background:#333; color:#fff; border:none; padding:8px 16px; cursor:pointer;">Clear All Assigned Tags</button>
+  </form>
+  {% endif %}
+
+</body>
+</html>

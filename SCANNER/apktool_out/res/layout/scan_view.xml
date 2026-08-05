@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent" android:keepScreenOn="true"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+        <TextView android:gravity="right" android:layout_gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/info_result" android:layout_weight="1.0" />
+        <TextView android:textSize="20.0dp" android:textColor="#cc0000" android:gravity="center" android:layout_gravity="center" android:id="@id/param_result" android:layout_width="0.0dp" android:layout_height="@dimen/rm_6c_et_height" android:layout_weight="2.0" />
+    </LinearLayout>
+    <ScrollView android:scrollbars="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+        <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_margin="5.0dp">
+            <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+                <TextView android:textSize="20.0dp" android:gravity="center" android:id="@id/sd1" android:background="@color/grayslate" android:layout_width="match_parent" android:layout_height="35.0dp" android:text="@string/basicparam" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:gravity="right" android:layout_gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/version" android:layout_weight="1.0" />
+                    <TextView android:gravity="center" android:layout_gravity="center" android:id="@id/version" android:layout_width="0.0dp" android:layout_height="@dimen/rm_6c_et_height" android:layout_weight="2.0" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:gravity="right" android:layout_gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/band" android:layout_weight="1.0" />
+                    <Spinner android:gravity="left" android:id="@id/band_spinner" android:layout_width="0.0dp" android:layout_height="@dimen/rm_6c_et_height" android:layout_weight="2.0" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:gravity="right" android:layout_gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/dmin" android:layout_weight="1.0" />
+                    <Spinner android:gravity="left" android:id="@id/min_spinner" android:layout_width="0.0dp" android:layout_height="@dimen/rm_6c_et_height" android:layout_weight="2.0" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:gravity="right" android:layout_gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/dmax" android:layout_weight="1.0" />
+                    <Spinner android:gravity="left" android:id="@id/max_spinner" android:layout_width="0.0dp" android:layout_height="@dimen/rm_6c_et_height" android:layout_weight="2.0" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:gravity="right" android:layout_gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/power" android:layout_weight="1.0" />
+                    <Spinner android:gravity="left" android:id="@id/power_spinner" android:layout_width="0.0dp" android:layout_height="@dimen/rm_6c_et_height" android:layout_weight="2.0" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <Button android:layout_gravity="center_horizontal" android:id="@id/pro_read" android:background="@drawable/color_button_selector" android:layout_width="0.0dp" android:layout_height="40.0dp" android:text="@string/getstr" android:layout_weight="1.0" />
+                    <Button android:layout_gravity="center_horizontal" android:id="@id/pro_setting" android:background="@drawable/color_button_selector" android:layout_width="0.0dp" android:layout_height="40.0dp" android:text="@string/setstr" android:layout_weight="1.0" />
+                </LinearLayout>
+                <TextView android:id="@id/sd01" android:layout_width="match_parent" android:layout_height="5.0dp" />
+                <TextView android:textSize="20.0dp" android:gravity="center" android:id="@id/sd91" android:background="@color/grayslate" android:layout_width="match_parent" android:layout_height="35.0dp" android:text="@string/scanparam" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:gravity="right" android:layout_gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/qvalue" android:layout_weight="1.0" />
+                    <Spinner android:gravity="left" android:id="@id/qvalue_spinner" android:layout_width="0.0dp" android:layout_height="@dimen/rm_6c_et_height" android:layout_weight="2.0" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:gravity="right" android:layout_gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/session" android:layout_weight="1.0" />
+                    <Spinner android:gravity="left" android:id="@id/session_spinner" android:layout_width="0.0dp" android:layout_height="@dimen/rm_6c_et_height" android:layout_weight="2.0" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:gravity="right" android:layout_gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/IvtType" android:layout_weight="1.0" />
+                    <Spinner android:gravity="left" android:id="@id/IvtType_spinner" android:layout_width="0.0dp" android:layout_height="@dimen/rm_6c_et_height" android:layout_weight="2.0" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:gravity="right" android:layout_gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/ReadType" android:layout_weight="1.0" />
+                    <Spinner android:gravity="left" android:id="@id/mixmem_spinner" android:layout_width="0.0dp" android:layout_height="@dimen/rm_6c_et_height" android:layout_weight="2.0" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:gravity="right" android:layout_gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/tidptr" android:layout_weight="1.0" />
+                    <Spinner android:gravity="left" android:id="@id/tidptr_spinner" android:layout_width="0.0dp" android:layout_height="@dimen/rm_6c_et_height" android:layout_weight="2.0" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:gravity="right" android:layout_gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/tidlen" android:layout_weight="1.0" />
+                    <Spinner android:gravity="left" android:id="@id/tidlen_spinner" android:layout_width="0.0dp" android:layout_height="@dimen/rm_6c_et_height" android:layout_weight="2.0" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:gravity="right" android:layout_gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/scantime" android:layout_weight="1.0" />
+                    <Spinner android:gravity="left" android:id="@id/time_spinner" android:layout_width="0.0dp" android:layout_height="@dimen/rm_6c_et_height" android:layout_weight="2.0" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:gravity="right" android:layout_gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/timeInterval" android:layout_weight="1.0" />
+                    <Spinner android:gravity="left" android:id="@id/jgTime_spinner" android:layout_width="0.0dp" android:layout_height="@dimen/rm_6c_et_height" android:layout_weight="2.0" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:gravity="right" android:layout_gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/dwelltime" android:layout_weight="1.0" />
+                    <Spinner android:gravity="left" android:id="@id/dwell_spinner" android:layout_width="0.0dp" android:layout_height="@dimen/rm_6c_et_height" android:layout_weight="2.0" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:gravity="right" android:layout_gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/RunTime" android:layout_weight="1.0" />
+                    <EditText android:gravity="left" android:id="@id/tv_runtime" android:layout_width="0.0dp" android:layout_height="@dimen/rm_6c_et_height" android:text="0" android:layout_weight="2.0" />
+                </LinearLayout>
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <Button android:layout_gravity="center_horizontal" android:id="@id/ivt_read" android:background="@drawable/color_button_selector" android:layout_width="0.0dp" android:layout_height="40.0dp" android:text="@string/getstr" android:layout_weight="1.0" />
+                    <Button android:layout_gravity="center_horizontal" android:id="@id/ivt_setting" android:background="@drawable/color_button_selector" android:layout_width="0.0dp" android:layout_height="40.0dp" android:text="@string/setstr" android:layout_weight="1.0" />
+                </LinearLayout>
+                <TextView android:id="@id/sd5" android:layout_width="match_parent" android:layout_height="5.0dp" />
+                <LinearLayout android:visibility="gone" android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <Button android:layout_gravity="center_horizontal" android:id="@id/ivt_open" android:background="@drawable/color_button_selector" android:layout_width="0.0dp" android:layout_height="40.0dp" android:text="@string/btn_openrf" android:layout_weight="1.0" />
+                    <Button android:layout_gravity="center_horizontal" android:id="@id/ivt_close" android:background="@drawable/color_button_selector" android:layout_width="0.0dp" android:layout_height="40.0dp" android:text="@string/btn_closerf" android:layout_weight="1.0" />
+                </LinearLayout>
+                <TextView android:layout_width="match_parent" android:layout_height="5.0dp" />
+                <LinearLayout android:visibility="gone" android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:gravity="right" android:layout_gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/txt_temp" android:layout_weight="1.0" />
+                    <TextView android:gravity="center" android:layout_gravity="center" android:id="@id/txt_tempe" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="" android:layout_weight="1.0" />
+                    <Button android:layout_gravity="center_horizontal" android:id="@id/bt_Readtemp" android:background="@drawable/color_button_selector" android:layout_width="0.0dp" android:layout_height="40.0dp" android:text="@string/txt_read" android:layout_weight="1.0" />
+                </LinearLayout>
+                <TextView android:id="@id/sd6" android:layout_width="match_parent" android:layout_height="5.0dp" />
+                <LinearLayout android:id="@id/lineloss" android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:gravity="right" android:layout_gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/txt_returnloss" android:layout_weight="1.0" />
+                    <TextView android:gravity="center" android:layout_gravity="center" android:id="@id/txt_loss" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="" android:layout_weight="1.0" />
+                    <Button android:layout_gravity="center_horizontal" android:id="@id/bt_Readloss" android:background="@drawable/color_button_selector" android:layout_width="0.0dp" android:layout_height="40.0dp" android:text="@string/txt_read" android:layout_weight="1.0" />
+                </LinearLayout>
+                <TextView android:layout_width="match_parent" android:layout_height="0.0dp" />
+                <LinearLayout android:visibility="gone" android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <Button android:layout_gravity="center_horizontal" android:id="@id/bt_answer" android:background="@drawable/color_button_selector" android:layout_width="0.0dp" android:layout_height="40.0dp" android:text="@string/btn_answer" android:layout_weight="1.0" />
+                    <Button android:layout_gravity="center_horizontal" android:id="@id/bt_active" android:background="@drawable/color_button_selector" android:layout_width="0.0dp" android:layout_height="40.0dp" android:text="@string/btn_active" android:layout_weight="1.0" />
+                </LinearLayout>
+                <TextView android:id="@id/sd39" android:layout_width="match_parent" android:layout_height="5.0dp" />
+                <LinearLayout android:id="@id/linecheckant" android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:gravity="right" android:layout_gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/strantchcek" android:layout_weight="1.0" />
+                    <Spinner android:gravity="left" android:id="@id/checkant_spinner" android:layout_width="0.0dp" android:layout_height="@dimen/rm_6c_et_height" android:layout_weight="1.0" />
+                    <Button android:layout_gravity="center_horizontal" android:id="@id/bt_getantcheck" android:background="@drawable/color_button_selector" android:layout_width="0.0dp" android:layout_height="40.0dp" android:text="@string/getstr" android:layout_weight="1.0" />
+                    <Button android:layout_gravity="center_horizontal" android:id="@id/bt_setantcheck" android:background="@drawable/color_button_selector" android:layout_width="0.0dp" android:layout_height="40.0dp" android:text="@string/setstr" android:layout_weight="1.0" />
+                </LinearLayout>
+                <TextView android:id="@id/sd3" android:layout_width="match_parent" android:layout_height="5.0dp" />
+                <LinearLayout android:id="@id/linetagfocus" android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:gravity="right" android:layout_gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="Tagfocus" android:layout_weight="1.0" />
+                    <Spinner android:gravity="left" android:id="@id/focus_spinner" android:layout_width="0.0dp" android:layout_height="@dimen/rm_6c_et_height" android:layout_weight="1.0" />
+                    <Button android:layout_gravity="center_horizontal" android:id="@id/bt_GetFocus" android:background="@drawable/color_button_selector" android:layout_width="0.0dp" android:layout_height="40.0dp" android:text="@string/getstr" android:layout_weight="1.0" />
+                    <Button android:layout_gravity="center_horizontal" android:id="@id/bt_SetFocus" android:background="@drawable/color_button_selector" android:layout_width="0.0dp" android:layout_height="40.0dp" android:text="@string/setstr" android:layout_weight="1.0" />
+                </LinearLayout>
+                <TextView android:id="@id/sd" android:layout_width="match_parent" android:layout_height="5.0dp" />
+                <LinearLayout android:id="@id/linerange" android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:gravity="right" android:layout_gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/txt_range_controll" android:layout_weight="1.5" />
+                    <Spinner android:gravity="left" android:id="@id/range_spinner" android:layout_width="0.0dp" android:layout_height="@dimen/rm_6c_et_height" android:layout_weight="1.0" />
+                    <Button android:layout_gravity="center_horizontal" android:id="@id/bt_GetRange" android:background="@drawable/color_button_selector" android:layout_width="0.0dp" android:layout_height="40.0dp" android:text="@string/getstr" android:layout_weight="1.0" />
+                    <Button android:layout_gravity="center_horizontal" android:id="@id/bt_SetRange" android:background="@drawable/color_button_selector" android:layout_width="0.0dp" android:layout_height="40.0dp" android:text="@string/setstr" android:layout_weight="1.0" />
+                </LinearLayout>
+                <TextView android:id="@id/sd43" android:layout_width="match_parent" android:layout_height="5.0dp" />
+                <LinearLayout android:id="@id/lineprogile" android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:gravity="right" android:layout_gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="Profile" android:layout_weight="1.0" />
+                    <Spinner android:gravity="left" android:id="@id/prof_spinner" android:layout_width="0.0dp" android:layout_height="@dimen/rm_6c_et_height" android:layout_weight="1.0" />
+                    <Button android:layout_gravity="center_horizontal" android:id="@id/bt_SetProfile" android:background="@drawable/color_button_selector" android:layout_width="0.0dp" android:layout_height="40.0dp" android:text="@string/setstr" android:layout_weight="1.0" />
+                </LinearLayout>
+                <TextView android:id="@id/sd53" android:layout_width="match_parent" android:layout_height="5.0dp" />
+                <TextView android:id="@id/sd33" android:layout_width="match_parent" android:layout_height="5.0dp" />
+                <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <TextView android:gravity="right" android:layout_gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/BaudRate" android:layout_weight="1.0" />
+                    <Spinner android:gravity="left" android:id="@id/baud_spinner" android:layout_width="0.0dp" android:layout_height="@dimen/rm_6c_et_height" android:layout_weight="1.0" />
+                    <Button android:layout_gravity="center_horizontal" android:id="@id/bt_SetBdRate" android:background="@drawable/color_button_selector" android:layout_width="0.0dp" android:layout_height="40.0dp" android:text="@string/setstr" android:layout_weight="1.0" />
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>

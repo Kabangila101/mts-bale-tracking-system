@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:id="@id/scrollView1" android:layout_width="match_parent" android:layout_height="match_parent" android:keepScreenOn="true"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+            <TextView android:gravity="right" android:layout_gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/strmaskmem" android:layout_weight="1.0" />
+            <Spinner android:gravity="left" android:id="@id/mem_spinner" android:layout_width="0.0dp" android:layout_height="@dimen/rm_6c_et_height" android:layout_weight="2.0" />
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+            <TextView android:gravity="right" android:layout_gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/strmaskaddr" android:layout_weight="1.0" />
+            <EditText android:gravity="left" android:id="@id/et_addr" android:layout_width="0.0dp" android:layout_height="@dimen/rm_6c_et_height" android:layout_weight="2.0" />
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+            <TextView android:gravity="right" android:layout_gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/strmasklen" android:layout_weight="1.0" />
+            <EditText android:gravity="left" android:id="@id/et_len" android:layout_width="0.0dp" android:layout_height="@dimen/rm_6c_et_height" android:text="" android:layout_weight="2.0" android:inputType="numberSigned" />
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+            <TextView android:gravity="right" android:layout_gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/strmaskdata" android:layout_weight="1.0" />
+            <EditText android:gravity="left" android:id="@id/et_data" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="" android:singleLine="false" android:layout_weight="2.0" android:inputType="textMultiLine" />
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+            <Button android:layout_gravity="center_horizontal" android:id="@id/button_add" android:background="@drawable/color_button_selector" android:layout_width="0.0dp" android:layout_height="@dimen/button_height" android:layout_marginLeft="5.0dp" android:text="@string/strmaskadd" android:layout_weight="1.0" />
+            <Button android:layout_gravity="center_horizontal" android:id="@id/button_clear" android:background="@drawable/color_button_selector" android:layout_width="0.0dp" android:layout_height="@dimen/button_height" android:layout_marginLeft="5.0dp" android:text="@string/strmaskclear" android:layout_weight="1.0" />
+        </LinearLayout>
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="10.0dp" android:layout_marginTop="5.0dp" />
+        <LinearLayout android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginTop="20.0dp">
+            <TextView android:textSize="20.0dp" android:textColor="#cc0000" android:gravity="left" android:layout_gravity="center" android:id="@id/txt_mask" android:layout_width="match_parent" android:layout_height="match_parent" android:layout_marginLeft="20.0dp" />
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

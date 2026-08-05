@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <drawable name="clr_normal">#666666</drawable>
+    <drawable name="clr_pressed">#333333</drawable>
+    <drawable name="list_normal">#00000000</drawable>
+    <drawable name="list_pressed">#ff333333</drawable>
+    <drawable name="notification_template_icon_bg">#3333b5e5</drawable>
+    <drawable name="notification_template_icon_low_bg">#0cffffff</drawable>
+</resources>

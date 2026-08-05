@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:orientation="vertical" android:id="@id/linePage" android:descendantFocusability="blocksDescendants" android:layout_width="match_parent" android:layout_height="match_parent" android:keepScreenOn="true"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <RadioGroup android:orientation="horizontal" android:id="@id/RgInventory" android:padding="5.0dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <RadioButton android:textSize="15.0sp" android:textColor="@drawable/check_text_color2" android:id="@id/RbInventorySingle" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/rbInventorySingle" android:layout_weight="1.0" />
+        <RadioButton android:textSize="15.0sp" android:textColor="@drawable/check_text_color2" android:id="@id/RbInventoryLoop" android:layout_width="0.0dp" android:layout_height="wrap_content" android:checked="true" android:text="@string/rbInventoryLoop" android:layout_weight="1.0" />
+    </RadioGroup>
+    <View android:background="@color/gray1" android:layout_width="match_parent" android:layout_height="1.0px" />
+    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/layout2" android:paddingLeft="10.0dp" android:paddingRight="10.0dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/llContinuous" android:paddingTop="5.0dp" android:paddingBottom="5.0dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <CheckBox android:id="@id/chkLed" android:layout_width="0.0dp" android:layout_height="wrap_content" android:checked="false" android:text="LED" android:layout_weight="2.0" />
+            <Button android:textColor="@color/white" android:id="@id/BtInventory" android:background="@drawable/color_button_selector" android:layout_width="0.0dp" android:layout_height="wrap_content" android:layout_marginLeft="5.0dp" android:layout_marginRight="5.0dp" android:text="@string/btInventory" android:layout_weight="3.0" />
+            <Button android:textColor="@color/white" android:id="@id/BtImport" android:background="@drawable/color_button_selector" android:layout_width="0.0dp" android:layout_height="wrap_content" android:layout_marginLeft="5.0dp" android:layout_marginRight="5.0dp" android:text="@string/btImport" android:layout_weight="2.0" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:orientation="vertical" android:id="@id/layoutled" android:padding="5.0dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <LinearLayout android:id="@id/layouttype" android:padding="5.0dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/strfactory" />
+            <Spinner android:textSize="14.0sp" android:gravity="left" android:layout_gravity="center" android:id="@id/spfactory" android:layout_width="0.0dp" android:layout_height="wrap_content" android:layout_weight="1.0" />
+            <Button android:textColor="@color/white" android:id="@id/Btfilter" android:background="@drawable/color_button_selector" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="5.0dp" android:text="@string/strfilter" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:id="@id/layout0" android:padding="5.0dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <TextView android:textSize="14.0sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/CardNum" />
+        <TextView android:textSize="15.0sp" android:textStyle="bold" android:id="@id/tv_count" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="0" android:layout_weight="1.0" />
+        <TextView android:textSize="14.0sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/CardCount" />
+        <TextView android:textSize="15.0sp" android:textStyle="bold" android:id="@id/tv_alltag" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="0" android:layout_weight="1.0" />
+        <Button android:textSize="15.0sp" android:textColor="@color/white" android:id="@id/BtClear" android:background="@drawable/color_button_selector" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginRight="5.0dp" android:text="@string/btClear" />
+    </LinearLayout>
+    <LinearLayout android:id="@id/layout123" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="5.0dp">
+        <TextView android:textSize="12.0sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/ReadTime" />
+        <TextView android:textSize="12.0sp" android:textStyle="bold" android:textColor="@color/red1" android:id="@id/tv_times" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="00:00:00" android:layout_weight="1.0" />
+        <TextView android:textSize="12.0sp" android:layout_width="wrap_content" android:layout_height="match_parent" android:text="@string/CardSpeed" />
+        <TextView android:textSize="12.0sp" android:textStyle="bold" android:textColor="@color/red1" android:id="@id/tv_tagspeed" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="0" android:layout_weight="1.0" />
+    </LinearLayout>
+    <View android:background="@color/gray1" android:layout_width="match_parent" android:layout_height="5.0dp" />
+    <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:id="@id/layout4" android:background="@color/white" android:paddingLeft="10.0dp" android:paddingTop="5.0dp" android:paddingRight="10.0dp" android:paddingBottom="5.0dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+        <TextView android:textSize="15.0sp" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/tvTagUii" android:layout_weight="1.0" />
+        <TextView android:textSize="16.0sp" android:textStyle="bold" android:textColor="@color/red1" android:id="@id/tv_back" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="" android:layout_weight="4.0" />
+        <TextView android:visibility="gone" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/tvTagLen" android:layout_weight="1.0" />
+        <TextView android:textSize="15.0sp" android:gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="@string/tvTagCount" android:layout_weight="1.0" />
+        <TextView android:textSize="15.0sp" android:gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="RSSI" android:layout_weight="1.0" />
+    </LinearLayout>
+    <View android:background="@color/gray1" android:layout_width="match_parent" android:layout_height="1.0px" />
+    <ListView android:id="@id/LvTags" android:layout_width="match_parent" android:layout_height="match_parent" />
+</LinearLayout>

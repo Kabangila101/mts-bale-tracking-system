@@ -1,0 +1,294 @@
+.class public Lcom/UHF/scanlable/MainActivity;
+.super Landroid/app/TabActivity;
+.source "MainActivity.java"
+
+
+# static fields
+.field public static myTabHost:Landroid/widget/TabHost;
+
+
+# direct methods
+.method public constructor <init>()V
+    .locals 0
+
+    .line 20
+    invoke-direct {p0}, Landroid/app/TabActivity;-><init>()V
+
+    return-void
+.end method
+
+
+# virtual methods
+.method protected onCreate(Landroid/os/Bundle;)V
+    .locals 7
+    .annotation system Ldalvik/annotation/MethodParameters;
+        accessFlags = {
+            0x0
+        }
+        names = {
+            "savedInstanceState"
+        }
+    .end annotation
+
+    .line 26
+    invoke-super {p0, p1}, Landroid/app/TabActivity;->onCreate(Landroid/os/Bundle;)V
+
+    const/4 p1, 0x1
+
+    .line 27
+    invoke-virtual {p0, p1}, Lcom/UHF/scanlable/MainActivity;->requestWindowFeature(I)Z
+
+    const p1, 0x7f0a0020
+
+    .line 28
+    invoke-virtual {p0, p1}, Lcom/UHF/scanlable/MainActivity;->setContentView(I)V
+
+    .line 29
+    invoke-virtual {p0}, Lcom/UHF/scanlable/MainActivity;->getTabHost()Landroid/widget/TabHost;
+
+    move-result-object p1
+
+    sput-object p1, Lcom/UHF/scanlable/MainActivity;->myTabHost:Landroid/widget/TabHost;
+
+    .line 30
+    new-instance p1, Landroid/content/Intent;
+
+    const-class v0, Lcom/UHF/scanlable/ScanMode;
+
+    invoke-direct {p1, p0, v0}, Landroid/content/Intent;-><init>(Landroid/content/Context;Ljava/lang/Class;)V
+
+    .line 31
+    new-instance v0, Landroid/content/Intent;
+
+    const-class v1, Lcom/UHF/scanlable/ReadWriteActivity;
+
+    invoke-direct {v0, p0, v1}, Landroid/content/Intent;-><init>(Landroid/content/Context;Ljava/lang/Class;)V
+
+    .line 32
+    new-instance v1, Landroid/content/Intent;
+
+    const-class v2, Lcom/UHF/scanlable/ScanView;
+
+    invoke-direct {v1, p0, v2}, Landroid/content/Intent;-><init>(Landroid/content/Context;Ljava/lang/Class;)V
+
+    .line 33
+    new-instance v2, Landroid/content/Intent;
+
+    const-class v3, Lcom/UHF/scanlable/MaskActivity;
+
+    invoke-direct {v2, p0, v3}, Landroid/content/Intent;-><init>(Landroid/content/Context;Ljava/lang/Class;)V
+
+    .line 34
+    new-instance v3, Landroid/content/Intent;
+
+    const-class v4, Lcom/UHF/scanlable/Finding;
+
+    invoke-direct {v3, p0, v4}, Landroid/content/Intent;-><init>(Landroid/content/Context;Ljava/lang/Class;)V
+
+    .line 36
+    sget-object v4, Lcom/UHF/scanlable/MainActivity;->myTabHost:Landroid/widget/TabHost;
+
+    const v5, 0x7f0d00e1
+
+    invoke-virtual {p0, v5}, Lcom/UHF/scanlable/MainActivity;->getString(I)Ljava/lang/String;
+
+    move-result-object v6
+
+    invoke-virtual {v4, v6}, Landroid/widget/TabHost;->newTabSpec(Ljava/lang/String;)Landroid/widget/TabHost$TabSpec;
+
+    move-result-object v4
+
+    invoke-virtual {p0, v5}, Lcom/UHF/scanlable/MainActivity;->getString(I)Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-virtual {v4, v5}, Landroid/widget/TabHost$TabSpec;->setIndicator(Ljava/lang/CharSequence;)Landroid/widget/TabHost$TabSpec;
+
+    move-result-object v4
+
+    invoke-virtual {v4, p1}, Landroid/widget/TabHost$TabSpec;->setContent(Landroid/content/Intent;)Landroid/widget/TabHost$TabSpec;
+
+    move-result-object p1
+
+    .line 37
+    sget-object v4, Lcom/UHF/scanlable/MainActivity;->myTabHost:Landroid/widget/TabHost;
+
+    const v5, 0x7f0d00e0
+
+    invoke-virtual {p0, v5}, Lcom/UHF/scanlable/MainActivity;->getString(I)Ljava/lang/String;
+
+    move-result-object v6
+
+    invoke-virtual {v4, v6}, Landroid/widget/TabHost;->newTabSpec(Ljava/lang/String;)Landroid/widget/TabHost$TabSpec;
+
+    move-result-object v4
+
+    invoke-virtual {p0, v5}, Lcom/UHF/scanlable/MainActivity;->getString(I)Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-virtual {v4, v5}, Landroid/widget/TabHost$TabSpec;->setIndicator(Ljava/lang/CharSequence;)Landroid/widget/TabHost$TabSpec;
+
+    move-result-object v4
+
+    invoke-virtual {v4, v0}, Landroid/widget/TabHost$TabSpec;->setContent(Landroid/content/Intent;)Landroid/widget/TabHost$TabSpec;
+
+    move-result-object v0
+
+    .line 38
+    sget-object v4, Lcom/UHF/scanlable/MainActivity;->myTabHost:Landroid/widget/TabHost;
+
+    const v5, 0x7f0d00df
+
+    invoke-virtual {p0, v5}, Lcom/UHF/scanlable/MainActivity;->getString(I)Ljava/lang/String;
+
+    move-result-object v6
+
+    invoke-virtual {v4, v6}, Landroid/widget/TabHost;->newTabSpec(Ljava/lang/String;)Landroid/widget/TabHost$TabSpec;
+
+    move-result-object v4
+
+    invoke-virtual {p0, v5}, Lcom/UHF/scanlable/MainActivity;->getString(I)Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-virtual {v4, v5}, Landroid/widget/TabHost$TabSpec;->setIndicator(Ljava/lang/CharSequence;)Landroid/widget/TabHost$TabSpec;
+
+    move-result-object v4
+
+    invoke-virtual {v4, v1}, Landroid/widget/TabHost$TabSpec;->setContent(Landroid/content/Intent;)Landroid/widget/TabHost$TabSpec;
+
+    move-result-object v1
+
+    .line 39
+    sget-object v4, Lcom/UHF/scanlable/MainActivity;->myTabHost:Landroid/widget/TabHost;
+
+    const v5, 0x7f0d00de
+
+    invoke-virtual {p0, v5}, Lcom/UHF/scanlable/MainActivity;->getString(I)Ljava/lang/String;
+
+    move-result-object v6
+
+    invoke-virtual {v4, v6}, Landroid/widget/TabHost;->newTabSpec(Ljava/lang/String;)Landroid/widget/TabHost$TabSpec;
+
+    move-result-object v4
+
+    invoke-virtual {p0, v5}, Lcom/UHF/scanlable/MainActivity;->getString(I)Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-virtual {v4, v5}, Landroid/widget/TabHost$TabSpec;->setIndicator(Ljava/lang/CharSequence;)Landroid/widget/TabHost$TabSpec;
+
+    move-result-object v4
+
+    invoke-virtual {v4, v2}, Landroid/widget/TabHost$TabSpec;->setContent(Landroid/content/Intent;)Landroid/widget/TabHost$TabSpec;
+
+    move-result-object v2
+
+    .line 40
+    sget-object v4, Lcom/UHF/scanlable/MainActivity;->myTabHost:Landroid/widget/TabHost;
+
+    const v5, 0x7f0d007a
+
+    invoke-virtual {p0, v5}, Lcom/UHF/scanlable/MainActivity;->getString(I)Ljava/lang/String;
+
+    move-result-object v6
+
+    invoke-virtual {v4, v6}, Landroid/widget/TabHost;->newTabSpec(Ljava/lang/String;)Landroid/widget/TabHost$TabSpec;
+
+    move-result-object v4
+
+    invoke-virtual {p0, v5}, Lcom/UHF/scanlable/MainActivity;->getString(I)Ljava/lang/String;
+
+    move-result-object v5
+
+    invoke-virtual {v4, v5}, Landroid/widget/TabHost$TabSpec;->setIndicator(Ljava/lang/CharSequence;)Landroid/widget/TabHost$TabSpec;
+
+    move-result-object v4
+
+    invoke-virtual {v4, v3}, Landroid/widget/TabHost$TabSpec;->setContent(Landroid/content/Intent;)Landroid/widget/TabHost$TabSpec;
+
+    move-result-object v3
+
+    .line 42
+    sget-object v4, Lcom/UHF/scanlable/MainActivity;->myTabHost:Landroid/widget/TabHost;
+
+    invoke-virtual {v4, p1}, Landroid/widget/TabHost;->addTab(Landroid/widget/TabHost$TabSpec;)V
+
+    .line 43
+    sget-object p1, Lcom/UHF/scanlable/MainActivity;->myTabHost:Landroid/widget/TabHost;
+
+    invoke-virtual {p1, v3}, Landroid/widget/TabHost;->addTab(Landroid/widget/TabHost$TabSpec;)V
+
+    .line 44
+    sget-object p1, Lcom/UHF/scanlable/MainActivity;->myTabHost:Landroid/widget/TabHost;
+
+    invoke-virtual {p1, v0}, Landroid/widget/TabHost;->addTab(Landroid/widget/TabHost$TabSpec;)V
+
+    .line 45
+    sget-object p1, Lcom/UHF/scanlable/MainActivity;->myTabHost:Landroid/widget/TabHost;
+
+    invoke-virtual {p1, v2}, Landroid/widget/TabHost;->addTab(Landroid/widget/TabHost$TabSpec;)V
+
+    .line 46
+    sget-object p1, Lcom/UHF/scanlable/MainActivity;->myTabHost:Landroid/widget/TabHost;
+
+    invoke-virtual {p1, v1}, Landroid/widget/TabHost;->addTab(Landroid/widget/TabHost$TabSpec;)V
+
+    .line 47
+    sget-object p1, Lcom/UHF/scanlable/MainActivity;->myTabHost:Landroid/widget/TabHost;
+
+    const/4 v0, 0x0
+
+    invoke-virtual {p1, v0}, Landroid/widget/TabHost;->setCurrentTab(I)V
+
+    return-void
+.end method
+
+.method public onCreateOptionsMenu(Landroid/view/Menu;)Z
+    .locals 0
+    .annotation system Ldalvik/annotation/MethodParameters;
+        accessFlags = {
+            0x0
+        }
+        names = {
+            "menu"
+        }
+    .end annotation
+
+    const/4 p1, 0x1
+
+    return p1
+.end method
+
+.method protected onDestroy()V
+    .locals 1
+
+    .line 70
+    invoke-super {p0}, Landroid/app/TabActivity;->onDestroy()V
+
+    .line 72
+    sget-object v0, Lcom/UHF/scanlable/Reader;->rrlib:Lcom/rfid/trans/ReaderHelp;
+
+    invoke-virtual {v0}, Lcom/rfid/trans/ReaderHelp;->DisConnect()I
+
+    return-void
+.end method
+
+.method protected onPause()V
+    .locals 0
+
+    .line 64
+    invoke-super {p0}, Landroid/app/TabActivity;->onPause()V
+
+    return-void
+.end method
+
+.method protected onResume()V
+    .locals 0
+
+    .line 58
+    invoke-super {p0}, Landroid/app/TabActivity;->onResume()V
+
+    return-void
+.end method

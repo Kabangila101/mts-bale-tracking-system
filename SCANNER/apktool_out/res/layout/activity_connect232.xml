@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:gravity="center" android:orientation="vertical" android:background="@drawable/gradient_bg" android:layout_width="match_parent" android:layout_height="match_parent"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:gravity="center_vertical" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_weight="1.0">
+        <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:paddingLeft="10.0sp" android:paddingTop="5.0sp" android:paddingRight="10.0sp" android:paddingBottom="5.0sp" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0sp">
+            <TextView android:textColor="#ff222222" android:gravity="center_vertical" android:paddingLeft="4.0dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/SerialPort" />
+            <TextView android:textColor="#ff222222" android:gravity="center_vertical" android:paddingLeft="4.0dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="/dev/ttyHSL0" />
+        </LinearLayout>
+        <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:paddingLeft="10.0sp" android:paddingTop="5.0sp" android:paddingRight="10.0sp" android:paddingBottom="5.0sp" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0sp">
+            <TextView android:textColor="#ff222222" android:gravity="center_vertical" android:paddingLeft="4.0dp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="@string/BaudRate" />
+            <TableLayout android:paddingLeft="10.0sp" android:paddingRight="10.0sp" android:layout_width="match_parent" android:layout_height="wrap_content" android:stretchColumns="0" android:shrinkColumns="0">
+                <LinearLayout android:id="@id/main_linearLayout" android:layout_width="match_parent" android:layout_height="wrap_content">
+                    <RadioGroup android:gravity="left" android:orientation="vertical" android:id="@id/group_monza_status" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_weight="0.43">
+                        <RadioButton android:textColor="#333333" android:id="@id/baud_57600" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dp" android:text="57600" />
+                        <RadioButton android:textColor="#333333" android:id="@id/baud_115200" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dp" android:checked="true" android:text="115200" />
+                    </RadioGroup>
+                </LinearLayout>
+            </TableLayout>
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_weight="1.0">
+        <TextView android:textStyle="bold" android:textColor="#ff222222" android:gravity="center_horizontal" android:id="@id/textview_connect" android:background="@drawable/color_button_selector" android:paddingTop="10.0sp" android:paddingBottom="10.0sp" android:clickable="true" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginLeft="20.0sp" android:layout_marginTop="20.0sp" android:layout_marginRight="20.0sp" android:layout_marginBottom="5.0sp" android:text="@string/Connect" />
+    </LinearLayout>
+</LinearLayout>

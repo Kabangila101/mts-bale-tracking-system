@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources translatable="false">
+    <string-array name="country_codes" translatable="false">
+        <item>-</item>
+        <item>AR</item>
+        <item>AU</item>
+        <item>BR</item>
+        <item>BG</item>
+        <item>CA</item>
+        <item>CN</item>
+        <item>CZ</item>
+        <item>DE</item>
+        <item>DK</item>
+        <item>ES</item>
+        <item>FI</item>
+        <item>FR</item>
+        <item>GB</item>
+        <item>GR</item>
+        <item>HU</item>
+        <item>ID</item>
+        <item>IT</item>
+        <item>JP</item>
+        <item>KR</item>
+        <item>NL</item>
+        <item>PL</item>
+        <item>PT</item>
+        <item>RU</item>
+        <item>SE</item>
+        <item>SK</item>
+        <item>SI</item>
+        <item>TR</item>
+        <item>TW</item>
+        <item>US</item>
+    </string-array>
+
+
+<!--New Zealand-->
+
+    <string-array name="arrayModeEx">
+        <item>@string/ETSI_Standard</item>
+    </string-array>
+
+    <string-array name="arrayFrequency" translatable="false">
+        <item>@string/China_Standard_840_845MHz</item>
+        <item>@string/China_Standard_920_925MHz</item>
+        <item>@string/ETSI_Standard</item>
+        <item>@string/United_States_Standard</item>
+        <item>@string/Korea</item>
+        <item>@string/Japan</item>
+        <item>@string/South_Africa_915_919MHz</item>
+        <item>@string/Chain_TaiWan</item>
+        <item>@string/vietnam_918_923MHz</item>
+        <item>@string/Peru_915_928MHz</item>
+        <item>@string/Russia_860_867MHZ</item>
+        <item>@string/Malaysia</item>
+        <item>@string/Brazil</item>
+        <item>@string/ETSI_UPPER</item>
+        <item>@string/Australia</item>
+        <item>@string/Indonesia</item>
+        <item>@string/Israel</item>
+        <item>@string/HongKong</item>
+        <item>@string/New_Zealand</item>
+    </string-array>
+
+    <integer-array  name="arrayFrequencyValue" translatable="false">
+        <item>0x01</item>
+        <item>0x02</item>
+        <item>0x04</item>
+        <item>0x08</item>
+        <item>0x16</item>
+        <item>0x32</item>
+        <item>0x33</item>
+        <item>0x34</item>
+        <item>0x35</item>
+        <item>0x36</item>
+        <item>0x37</item>
+        <item>0x3B</item>
+        <item>0x3C</item>
+        <item>0x3D</item>
+        <item>0x3E</item>
+        <item>0x3F</item>
+        <item>0x40</item>
+        <item>0x41</item>
+        <item>0x42</item>
+    </integer-array>
+
+    <string-array name="arrayFastInventory" translatable="false">
+        <item>Close</item>
+        <item>CrID16</item>
+        <item>CrStoredCRC</item>
+        <item>CrRN16</item>
+        <item>CrID32</item>
+    </string-array>
+</resources>

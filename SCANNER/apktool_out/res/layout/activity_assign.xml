@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView android:id="@+id/scrollAssign" android:layout_width="match_parent" android:layout_height="match_parent" android:keepScreenOn="true" android:background="@color/gray1"
+  xmlns:android="http://schemas.android.com/apk/res/android">
+    <LinearLayout android:orientation="vertical" android:layout_width="match_parent" android:layout_height="wrap_content" android:paddingBottom="16.0dp">
+
+        <TextView android:textSize="13.0sp" android:textStyle="bold" android:textColor="@color/white" android:background="@color/light_blue" android:paddingLeft="12.0dp" android:paddingTop="6.0dp" android:paddingRight="12.0dp" android:paddingBottom="6.0dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:text="SERVER" />
+
+        <LinearLayout android:orientation="vertical" android:background="@color/white" android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="10.0dp">
+            <LinearLayout android:gravity="center_vertical" android:layout_width="match_parent" android:layout_height="wrap_content">
+                <TextView android:gravity="right" android:layout_gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="Server IP" android:layout_weight="1.0" />
+                <EditText android:gravity="left" android:id="@+id/et_server_ip" android:layout_width="0.0dp" android:layout_height="wrap_content" android:inputType="text" android:layout_marginLeft="8.0dp" android:layout_weight="2.0" />
+                <Button android:textColor="@color/white" android:id="@+id/btn_save_ip" android:background="@drawable/color_button_selector" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8.0dp" android:text="Save" />
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView android:textSize="13.0sp" android:textStyle="bold" android:textColor="@color/white" android:background="@color/light_blue" android:paddingLeft="12.0dp" android:paddingTop="6.0dp" android:paddingRight="12.0dp" android:paddingBottom="6.0dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dp" android:text="SCAN &amp; ASSIGN BALE" />
+
+        <LinearLayout android:orientation="vertical" android:background="@color/white" android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="10.0dp">
+
+            <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:background="@color/gray1" android:padding="8.0dp" android:layout_width="match_parent" android:layout_height="wrap_content">
+                <TextView android:textSize="12.0sp" android:textColor="@color/black" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TAG ID" />
+                <EditText android:gravity="left" android:id="@+id/et_tag_id" android:textStyle="bold" android:textColor="@color/lightblue" android:layout_width="0.0dp" android:layout_height="wrap_content" android:layout_marginLeft="8.0dp" android:layout_weight="1.0" android:hint="scan or type EPC" />
+                <Button android:textColor="@color/white" android:id="@+id/btn_scan" android:background="@drawable/color_button_selector" android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginLeft="8.0dp" android:text="Scan Tag" />
+            </LinearLayout>
+
+            <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:background="@color/gray1" android:padding="8.0dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="1.0px">
+                <TextView android:textSize="12.0sp" android:textColor="@color/black" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="TID" />
+                <EditText android:gravity="left" android:id="@+id/et_tid" android:textSize="12.0sp" android:layout_width="0.0dp" android:layout_height="wrap_content" android:layout_marginLeft="8.0dp" android:layout_weight="1.0" android:hint="captured with EPC if available" />
+            </LinearLayout>
+
+            <LinearLayout android:gravity="center_vertical" android:orientation="horizontal" android:background="@color/gray1" android:padding="8.0dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="1.0px">
+                <TextView android:textSize="11.0sp" android:textColor="@color/black" android:layout_width="0.0dp" android:layout_height="wrap_content" android:layout_weight="1.0" android:text="Scan Power (0-33, lower = shorter range so only a close tag responds)" />
+                <EditText android:gravity="center" android:id="@+id/et_scan_power" android:textSize="12.0sp" android:layout_width="50.0dp" android:layout_height="wrap_content" android:layout_marginLeft="8.0dp" android:inputType="number" android:maxLength="2" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dp">
+                <TextView android:gravity="right" android:layout_gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="Bale Number" android:layout_weight="1.0" />
+                <EditText android:gravity="left" android:id="@+id/et_bale_number" android:layout_width="0.0dp" android:layout_height="wrap_content" android:layout_marginLeft="8.0dp" android:layout_weight="2.0" />
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="6.0dp">
+                <TextView android:gravity="right" android:layout_gravity="center" android:layout_width="0.0dp" android:layout_height="wrap_content" android:text="Grade" android:layout_weight="1.0" />
+                <Spinner android:gravity="left" android:id="@+id/sp_grade" android:layout_width="0.0dp" android:layout_height="wrap_content" android:layout_marginLeft="8.0dp" android:layout_weight="2.0" />
+            </LinearLayout>
+
+            <View android:background="@color/gray1" android:layout_width="match_parent" android:layout_height="1.0px" android:layout_marginTop="10.0dp" android:layout_marginBottom="10.0dp" />
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content">
+                <LinearLayout android:orientation="vertical" android:layout_width="0.0dp" android:layout_height="wrap_content" android:layout_weight="1.0">
+                    <TextView android:textSize="12.0sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Truck" />
+                    <EditText android:id="@+id/et_truck" android:layout_width="match_parent" android:layout_height="wrap_content" />
+                </LinearLayout>
+                <LinearLayout android:orientation="vertical" android:layout_width="0.0dp" android:layout_height="wrap_content" android:layout_weight="1.0" android:layout_marginLeft="10.0dp">
+                    <TextView android:textSize="12.0sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Weight (kg)" />
+                    <EditText android:id="@+id/et_weight" android:layout_width="match_parent" android:layout_height="wrap_content" android:inputType="numberDecimal" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="6.0dp">
+                <LinearLayout android:orientation="vertical" android:layout_width="0.0dp" android:layout_height="wrap_content" android:layout_weight="1.0">
+                    <TextView android:textSize="12.0sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Farm" />
+                    <EditText android:id="@+id/et_farm" android:layout_width="match_parent" android:layout_height="wrap_content" />
+                </LinearLayout>
+                <LinearLayout android:orientation="vertical" android:layout_width="0.0dp" android:layout_height="wrap_content" android:layout_weight="1.0" android:layout_marginLeft="10.0dp">
+                    <TextView android:textSize="12.0sp" android:layout_width="wrap_content" android:layout_height="wrap_content" android:text="Farmer Name" />
+                    <EditText android:id="@+id/et_farmer" android:layout_width="match_parent" android:layout_height="wrap_content" />
+                </LinearLayout>
+            </LinearLayout>
+
+            <Button android:textColor="@color/white" android:id="@+id/btn_assign" android:background="@drawable/color_button_selector" android:layout_width="match_parent" android:layout_height="@dimen/button_height" android:layout_marginTop="14.0dp" android:text="ASSIGN BALE" android:textStyle="bold" />
+        </LinearLayout>
+
+        <TextView android:textSize="13.0sp" android:textStyle="bold" android:textColor="@color/white" android:background="@color/light_blue" android:paddingLeft="12.0dp" android:paddingTop="6.0dp" android:paddingRight="12.0dp" android:paddingBottom="6.0dp" android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="10.0dp" android:text="ASSIGNED TAGS" />
+
+        <LinearLayout android:orientation="vertical" android:background="@color/white" android:layout_width="match_parent" android:layout_height="wrap_content" android:padding="4.0dp">
+            <ListView android:id="@+id/lv_assigned_tags" android:divider="@color/gray1" android:dividerHeight="1.0px" android:layout_width="match_parent" android:layout_height="320.0dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>MTS Demo - Factory Processing</title>
+<style>
+  body { font-family: sans-serif; max-width: 950px; margin: 40px auto; }
+  .nav { display:flex; gap:10px; margin-bottom:20px; }
+  .nav a { padding:10px 20px; border:1px solid #333; background:#eee; color:#000; text-decoration:none; }
+  .nav a.active { background:#333; color:#fff; }
+  input, select { padding:6px; }
+  .layout { display:flex; gap:25px; align-items:flex-start; }
+  .main { flex:2; min-width:0; }
+  .sidebar { flex:1; min-width:220px; border:1px solid #ccc; padding:12px; }
+  .sidebar h3 { margin-top:0; }
+  #flagged-list { list-style:none; padding:0; margin:0; font-size:13px; }
+  #flagged-list li { border-bottom:1px solid #eee; padding:6px 0; }
+  #validated-count { font-size:32px; font-weight:bold; color:green; }
+</style>
+</head>
+<body>
+
+  <div class="nav">
+    <a href="/">Assign (Stage 0)</a>
+    <a href="/station1" class="active">Factory Processing</a>
+  </div>
+
+  <h1>Station 1: Live Checkpoint</h1>
+
+  <div class="layout">
+    <div class="main">
+      <p style="color:#888;">Waiting for a tag to be ready by the antenna...</p>
+      <p id="scale-status">Scale: <span id="scale-reading">--</span></p>
+      <div id="unknown-alert"></div>
+      <div id="scan-result"></div>
+    </div>
+
+    <div class="sidebar">
+      <h3>Bales Validated</h3>
+      <div id="validated-count">0</div>
+
+      <h3 style="margin-top:20px;">Flagged Bales</h3>
+      <ul id="flagged-list"><li style="color:#888;">None yet</li></ul>
+
+      <form method="POST" action="/clear_validation_data" style="margin-top:20px;" onsubmit="return confirm('Clear validated count, flagged list, and reset every assigned tag back to ASSIGNED? Assignments themselves are kept.');">
+        <button type="submit" style="width:100%; background:#333; color:#fff; border:none; padding:8px 16px; cursor:pointer;">Clear Data</button>
+      </form>
+    </div>
+  </div>
+
+<script>
+// Poll the scale for a live weight readout
+setInterval(async () => {
+  const res = await fetch('/api/latest_weight');
+  const w = await res.json();
+  const el = document.getElementById('scale-reading');
+  if (w.weight_kg === null || w.weight_kg === undefined) {
+    el.textContent = '-- (no reading)';
+  } else {
+    el.textContent = `${w.weight_kg.toFixed(3)} kg ${w.stable ? '(stable)' : '(settling...)'}`;
+    el.style.color = w.stable ? 'green' : '#888';
+  }
+}, 500);
+
+// Poll for the latest scan every 1.5 seconds
+let lastShownTagId = null;
+let lastShownStatus = null;
+setInterval(async () => {
+  const res = await fetch('/api/latest_scan');
+  const tag = await res.json();
+  if (!tag) {
+    if (lastShownTagId !== null) {
+      lastShownTagId = null;
+      lastShownStatus = null;
+      document.getElementById('scan-result').innerHTML = '';
+    }
+    return;
+  }
+  if (tag.tag_id === lastShownTagId && tag.status === lastShownStatus) return;
+  lastShownTagId = tag.tag_id;
+  lastShownStatus = tag.status;
+  document.getElementById('unknown-alert').innerHTML = '';
+
+  document.getElementById('scan-result').innerHTML = `
+    <div style="border:2px solid #333; padding:15px; margin-top:15px;">
+      <h3>Tag Scanned ✓ — ${tag.tag_id}</h3>
+      <p><b>Bale #:</b> ${tag.bale_number}</p>
+      <p><b>Grade:</b> ${tag.grade}</p>
+      <p><b>Expected Weight:</b> ${(tag.expected_weight / 1000).toFixed(2)} kg</p>
+      <p><b>Farm:</b> ${tag.farm} | <b>Farmer:</b> ${tag.farmer}</p>
+      ${tag.status === 'SCANNED' ? '<p style="color:#888;">Waiting for a stable weight from the scale...</p>' : ''}
+      ${tag.status === 'VALIDATED' ? '<h2 style="color:green;">VALIDATED</h2>' : ''}
+      ${tag.status === 'FLAGGED' ? `<h2 style="color:red;">FLAGGED</h2><p>${tag.reason}</p>` : ''}
+      <details style="margin-top:10px;">
+        <summary style="cursor:pointer; color:#888;">Manual override</summary>
+        <form method="POST" action="/validate">
+          <input type="hidden" name="tag_id" value="${tag.tag_id}">
+          <label>Weight (kg)</label>
+          <input name="weight_kg" type="number" step="0.001" min="0" required>
+          <button type="submit">Validate</button>
+        </form>
+      </details>
+    </div>
+  `;
+}, 1500);
+
+// Poll for a tag the antenna saw that was never assigned in the system
+let lastShownUnknownTagId = null;
+setInterval(async () => {
+  const res = await fetch('/api/unrecognized_scan');
+  const data = await res.json();
+  if (!data.tag_id) {
+    if (lastShownUnknownTagId !== null) {
+      lastShownUnknownTagId = null;
+      document.getElementById('unknown-alert').innerHTML = '';
+    }
+    return;
+  }
+  if (data.tag_id === lastShownUnknownTagId) return;
+  lastShownUnknownTagId = data.tag_id;
+
+  document.getElementById('unknown-alert').innerHTML = `
+    <div style="border:2px solid #c00; background:#fee; padding:15px; margin-top:15px;">
+      <h3 style="color:#c00;">⚠ UNKNOWN TAG — ${data.tag_id}</h3>
+      <p>This tag was scanned by the antenna but was never assigned to a bale. Go to the Assign page and add it manually.</p>
+    </div>
+  `;
+}, 1500);
+
+// Poll the validated count + flagged list every 2 seconds
+setInterval(async () => {
+  const res = await fetch('/api/stats');
+  const stats = await res.json();
+
+  document.getElementById('validated-count').textContent = stats.validated_count;
+
+  const list = document.getElementById('flagged-list');
+  if (!stats.flagged.length) {
+    list.innerHTML = '<li style="color:#888;">None yet</li>';
+  } else {
+    list.innerHTML = stats.flagged.map(f => `
+      <li>
+        <b>${f.bale_number}</b> (${f.tag_id})<br>
+        <span style="color:#c00;">${f.reason}</span>
+      </li>
+    `).join('');
+  }
+}, 2000);
+</script>
+</body>
+</html>
