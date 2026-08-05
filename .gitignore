@@ -30,3 +30,4 @@ SCANNER/patch_src/smaliout/
 # Third-party reverse-engineering tools -- generic, freely redistributable,
 # large. Exact versions + download links are in SCANNER/README.md.
 SCANNER/tools/*.jar
+shortcut.lnk
