@@ -1,6 +1,6 @@
 # MTS — Bale Tracking System
 
-MTS tracks wool/produce bales through an RFID + scale checkpoint on the
+MTS tracks tobacco bales through an RFID + scale checkpoint on the
 factory floor. A tag assigned to a bale at intake is later read automatically
 as the bale reaches the weigh station; its actual weight is compared against
 the expected weight recorded at assignment time, and the bale is marked
