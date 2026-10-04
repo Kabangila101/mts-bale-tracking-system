@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MTS Documentation — Hemed Salum Kabangila</title>
+<meta name="author" content="Hemed Salum Kabangila">
+<link rel="icon" type="image/png" href="img/mkwawa-leaf.png">
+<link rel="stylesheet" href="css/print.css">
+</head>
+<body>
+
+<!-- ============================================================ COVER -->
+<section class="cover">
+  <div class="cover-top">
+    <img class="cover-logo" src="img/mkwawa-wordmark.png" alt="Mkwawa Leaf Tobacco Limited">
+  </div>
+  <div class="cover-mid">
+    <p class="cover-kicker">Bale Reception &amp; Validation Automation</p>
+    <h1 class="cover-title">MTS — Mkwawa Tracking System</h1>
+    <p class="cover-subtitle">System Architecture, Technical Reference &amp; Deployment Roadmap</p>
+  </div>
+  <div class="cover-bottom">
+    <div>
+      <div class="field">
+        <p class="field-label">Prepared by</p>
+        <p class="field-value">Hemed Salum Kabangila</p>
+      </div>
+      <div class="field">
+        <p class="field-label">Role</p>
+        <p class="field-value">Field Student — Software Architect &amp; Developer</p>
+      </div>
+    </div>
+    <div style="text-align:right;">
+      <div class="field">
+        <p class="field-label">Prepared for</p>
+        <p class="field-value">Mkwawa Leaf Tobacco Limited</p>
+      </div>
+      <div class="field">
+        <p class="field-label">Date</p>
+        <p class="field-value">August 2026</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============================================================ TOC -->
+<section class="toc">
+  <h2>Contents</h2>
+  <ol class="toc-list">
+    <li><span class="toc-num">1</span><span class="toc-title">Foreword</span></li>
+    <li><span class="toc-num">2</span><span class="toc-title">Executive Summary</span></li>
+    <li><span class="toc-num">3</span><span class="toc-title">Current Operations — The Manual Process</span></li>
+    <li><span class="toc-num">4</span><span class="toc-title">The MTS Vision — Full-Scale Automated Design</span></li>
+    <li><span class="toc-num">5</span><span class="toc-title">Proof of Concept — The Working Demonstration</span></li>
+    <li><span class="toc-num">6</span><span class="toc-title">System Architecture</span></li>
+    <li><span class="toc-num">7</span><span class="toc-title">Technical Reference</span></li>
+  </ol>
+  <ol class="toc-list toc-sub">
+    <li><span class="toc-num">7.1</span><span class="toc-title">MTS Demo — Central Server</span></li>
+    <li><span class="toc-num">7.2</span><span class="toc-title">RFID Antenna — Fixed Checkpoint Reader</span></li>
+    <li><span class="toc-num">7.3</span><span class="toc-title">Scanner — Intake Handheld Device</span></li>
+  </ol>
+  <ol class="toc-list" start="8">
+    <li><span class="toc-num">8</span><span class="toc-title">Path to Full Deployment</span></li>
+    <li><span class="toc-num">9</span><span class="toc-title">Appendix — Glossary &amp; Reference Tables</span></li>
+  </ol>
+</section>
+
+<!-- ============================================================ 1. FOREWORD -->
+<section class="doc-section">
+  <div class="section-head"><span class="section-number">1</span><h2>Foreword</h2></div>
+
+  <p>I wrote the first line of this system after watching a receiving shift at
+  Mkwawa Leaf for the better part of a day. Fourteen people were doing work
+  that came down, in the end, to the same three questions asked over and
+  over: which bale is this, how much does it weigh, and does that number
+  agree with what was declared. Two of those questions can be answered by a
+  chip the size of a fingernail and a scale that already sits under every
+  conveyor. The third is arithmetic.</p>
+
+  <p>What follows is my account of building the system that answers those
+  three questions automatically — why it is built the way it is, what broke
+  along the way and how I fixed it, and what it would take to run it across
+  all seven receiving lines instead of the one I used to prove it out. I have
+  tried to write it so that someone who has never opened the source code can
+  follow the reasoning, and so that someone who has to open the source code
+  next year can find their way around it quickly.</p>
+
+  <p style="margin-top:5mm;"><strong>Hemed Salum Kabangila</strong><br>
+  Field Student — Software Architect &amp; Developer</p>
+</section>
+
+<!-- ============================================================ 2. EXEC SUMMARY -->
+<section class="doc-section">
+  <div class="section-head"><span class="section-number">2</span><h2>Executive Summary</h2></div>
+
+  <p>Mkwawa Leaf Tobacco Limited receives baled tobacco from contracted farms
+  by truck, across seven receiving conveyor lines. Every bale must be
+  identified and weighed against the figure declared when it was baled, so
+  that discrepancies — under-filled bales, mislabelled grades, tampering —
+  are caught before the bale moves further into the factory. Today that
+  identification and weighing is done by hand, at every line, by an operator
+  with a barcode scanner and a scale wired to a PC. A second worker per line
+  stands by to physically remove any bale the computer flags. Fourteen
+  people are committed to this single step of the receiving process.</p>
+
+  <p>MTS — the Mkwawa Tracking System — replaces the barcode scanner and the
+  manual read with passive UHF RFID. A bale is tagged once, at the farm, when
+  it is packed onto the truck. From that point forward nobody needs to scan
+  anything by hand: a fixed reader at the checkpoint identifies the bale
+  automatically as it passes, the scale beneath it reports the weight, and a
+  central server makes the validation decision in well under a second. A
+  second, independent reader further down the line re-checks the outcome and
+  sounds an alarm only if the bale was flagged, so that the one remaining
+  worker per offload point knows exactly which bale to pull.</p>
+
+  <div class="stat-row">
+    <div class="stat"><div class="stat-figure">14 &rarr; 2</div><div class="stat-label">Workers required, full deployment</div></div>
+    <div class="stat"><div class="stat-figure">7</div><div class="stat-label">Receiving lines covered</div></div>
+    <div class="stat"><div class="stat-figure">&lt;1s</div><div class="stat-label">Validation decision time</div></div>
+  </div>
+
+  <p>The system described in this document has been built and proven on a
+  single receiving line — end to end, from farm-side tagging through to a
+  live flagged-bale alarm — and is documented here exactly as it stands
+  today. Section&nbsp;4 sets out the full seven-line design this pilot is
+  built to scale into; Section&nbsp;8 sets out precisely what stands between
+  the current pilot and that full deployment. Nothing in this document
+  describes work that has not actually been built, tested, and run against
+  real hardware on the factory floor, except where it is explicitly marked
+  as a proposal for the next phase.</p>
+</section>
+
+<!-- ============================================================ 3. CURRENT OPERATIONS -->
+<section class="doc-section">
+  <div class="section-head"><span class="section-number">3</span><h2>Current Operations — The Manual Process</h2></div>
+
+  <p>Mkwawa Leaf's receiving floor has seven conveyor lines, each fed
+  directly by trucks arriving from contracted farms. Each line runs the same
+  manual process, independently, with its own staff and its own equipment:</p>
+
+  <figure>
+    <p class="figure-label">Figure 1 &middot; The Manual Process, Per Line</p>
+    <div class="diagram-frame"><div class="mermaid" id="dg-manual"></div></div>
+    <figcaption>Identical at all seven lines. The barcode scanner and the
+    scale are both wired directly into the line's own PC; nothing is shared
+    or centralised between lines.</figcaption>
+  </figure>
+
+  <p>An operator stationed at the line holds a wired barcode scanner. As each
+  bale arrives, they physically locate its barcode sticker, scan it, and the
+  PC looks up the bale's declared weight and grade. The scale — connected to
+  the same PC over a serial cable — reports the bale's actual weight, and
+  the PC's software compares the two figures and marks the bale as passed or
+  flagged. A second worker, stationed just past the scale, watches for a
+  flagged result and physically lifts that bale off the conveyor by hand.</p>
+
+  <p>This works, and it has worked for years, but it has three costs that
+  compound across seven lines running in parallel:</p>
+
+  <h4>Labour</h4>
+  <p>Two people per line, seven lines, every shift: fourteen people whose
+  entire task is reading a barcode and watching for a flag. None of them are
+  doing anything a computer cannot do faster and more consistently.</p>
+
+  <h4>Speed</h4>
+  <p>Each bale waits on a human to physically aim a scanner at its barcode
+  and pull the trigger. On a receiving floor moving hundreds of bales a
+  shift, that single manual step sets the pace for the entire line.</p>
+
+  <h4>Consistency</h4>
+  <p>A barcode sticker that has been rained on, folded, or partially torn in
+  transit is unreadable to a scanner in a way it would not be to an RFID
+  reader, which does not require line of sight or an intact printed surface.
+  A tired operator on a long shift can also simply miss a bale, or scan the
+  wrong one, in a way an automated checkpoint cannot.</p>
+</section>
+
+<!-- ============================================================ 4. THE VISION -->
+<section class="doc-section">
+  <div class="section-head"><span class="section-number">4</span><h2>The MTS Vision — Full-Scale Automated Design</h2></div>
+
+  <p>The design I am proposing keeps the physical layout of the receiving
+  floor exactly as it is — seven lines, trucks unloading as they do today —
+  and replaces only the identification and weighing step at each line, plus
+  the offload step at the end. Nothing about how bales are trucked in or how
+  they move once past the checkpoint changes.</p>
+
+  <p>Every one of the seven lines gets its own RFID checkpoint: a fixed
+  reader antenna positioned over the conveyor, paired with the same scale
+  already installed there. As a tagged bale passes, the reader identifies it
+  and the scale weighs it; the central server validates the two figures
+  against each other and records the outcome. The bale is not stopped or
+  slowed for this — it continues moving regardless of the result, the same
+  way it does under the manual process today.</p>
+
+  <p>Every one of those seven checkpoints reports back to the same central
+  server independently and continuously — there is no per-line dashboard, no
+  separate record per conveyor. One supervisor watching one screen can see
+  every line's activity as it happens, which is not something the current
+  manual setup, with seven standalone PCs, offers at all today.</p>
+
+  <p>Downstream of the seven individual lines, the physical conveyors
+  themselves already merge: three of the seven lines feed into one trunk
+  conveyor, and the remaining four feed into a second trunk. This is where
+  the second checkpoint sits — one antenna per trunk, positioned right at
+  the point where a worker is already needed to receive bales off that
+  trunk. That antenna asks the same central server whether the bale passing
+  it was flagged upstream, and sounds the reader's own alarm if so, telling
+  the worker at that exact spot to pull it.</p>
+
+  <figure>
+    <p class="figure-label">Figure 2 &middot; Full Seven-Line Topology</p>
+    <div class="diagram-frame"><div class="mermaid" id="dg-vision"></div></div>
+    <figcaption>Three lines converge to the right trunk, four to the left.
+    Every checkpoint — all seven upstream, both downstream — reports to one
+    central server (dotted lines); only the two offload points still
+    require a person.</figcaption>
+  </figure>
+
+  <figure>
+    <p class="figure-label">Figure 2a &middot; Original Site-Planning Sketch</p>
+    <div class="diagram-frame"><img src="img/site-plan-sketch.jpeg" alt="Original hand-drawn site plan for the seven-line layout" style="max-width:100%;"></div>
+    <figcaption>The layout Figure 2 was engineered from — seven receiving
+    points, two alarm/offload checkpoints, and every reader wired back to
+    one monitoring station.</figcaption>
+  </figure>
+
+  <p>The arithmetic is straightforward. Fourteen people are needed today
+  because the identification-and-weigh step is manual at all seven lines,
+  and because every line needs its own dedicated offload worker. Once that
+  step is automatic everywhere, the only work left for a human is physically
+  lifting a flagged bale off a conveyor — and because the seven lines
+  physically converge into two trunks before that has to happen, two people,
+  one per trunk, can cover all seven lines between them.</p>
+
+  <div class="stat-row">
+    <div class="stat"><div class="stat-figure">7 &rarr; 2</div><div class="stat-label">Trunk convergence (3 right, 4 left)</div></div>
+    <div class="stat"><div class="stat-figure">9</div><div class="stat-label">Reader checkpoints at full scale</div></div>
+    <div class="stat"><div class="stat-figure">14 &rarr; 2</div><div class="stat-label">Total receiving-floor headcount</div></div>
+  </div>
+</section>
+
+<!-- ============================================================ 5. PROOF OF CONCEPT -->
+<section class="doc-section">
+  <div class="section-head"><span class="section-number">5</span><h2>Proof of Concept — The Working Demonstration</h2></div>
+
+  <p>Before proposing that Mkwawa Leaf commit to re-equipping all seven
+  lines, I built the complete system end to end on one line, so that the
+  validation logic, the hardware integration, and the alarm behaviour could
+  all be proven against real bales before a single additional antenna was
+  purchased. Everything described in this section is built, installed, and
+  has been run against real tagged bales and a real scale on the factory
+  floor — it is not a simulation.</p>
+
+  <figure>
+    <p class="figure-label">Figure 3 &middot; The Bale Journey — As Built</p>
+    <div class="diagram-frame"><div class="mermaid" id="dg-journey"></div></div>
+    <figcaption>The complete path a single bale follows on the pilot line,
+    from farm-side tagging through to the flagged-bale alarm.</figcaption>
+  </figure>
+
+  <h4>Stage 0 — Tagging at the farm</h4>
+  <p>Before a bale ever leaves the farm, the person packing the truck
+  identifies it with a handheld RFID device and records its bale number,
+  grade, farm, farmer, truck, and declared weight. That record is sent
+  immediately to the central server, so by the time the truck reaches Mkwawa
+  Leaf, every bale on it already has a record waiting for it.</p>
+
+  <h4>Station 1 — The checkpoint</h4>
+  <p>As the bale reaches the pilot conveyor, the fixed reader's first antenna
+  identifies its tag and reports it to the server, which opens a short
+  window to receive a weight. The scale beneath the conveyor streams its
+  reading continuously; the server matches a stable reading to the bale that
+  was just identified, nets out any residual weight left on the platform
+  from the previous bale, and compares the result against the bale's
+  declared weight to within a published tolerance. The outcome — validated
+  or flagged, with a stated reason if flagged — is recorded immediately.</p>
+
+  <h4>Downstream — The flag check</h4>
+  <p>A second antenna, further along the same conveyor, identifies the bale
+  again and asks the server, read-only, whether it was flagged. If it was,
+  the reader's own alarm sounds — several short pulses, distinct from its
+  routine per-read acknowledgement — so the bale can be pulled before it
+  proceeds any further. If it was not flagged, nothing happens at all; the
+  system produces no output for a bale that requires no action, which is
+  deliberate, since a constant stream of confirmations for ordinary bales
+  would train an operator to ignore the alarm altogether.</p>
+
+  <p>This single-line build is what all of the technical detail in
+  Section&nbsp;7 describes. It is also what has been demonstrated live: a
+  tag placed near the checkpoint antenna has been shown, in real time, to
+  reach the server and appear in its records within seconds, and a
+  deliberately under-weight bale has been shown to be correctly flagged and
+  to trigger the downstream alarm.</p>
+</section>
+
+<!-- ============================================================ 6. SYSTEM ARCHITECTURE -->
+<section class="doc-section">
+  <div class="section-head"><span class="section-number">6</span><h2>System Architecture</h2></div>
+
+  <p>Three independent pieces of software carry out the process described
+  above, coordinated through one central server that is the sole holder of
+  every bale's record. None of the three ever communicate directly with one
+  another — each reports to the server, and the server alone decides what
+  happens next.</p>
+
+  <figure>
+    <p class="figure-label">Figure 4 &middot; System Architecture</p>
+    <div class="diagram-frame"><div class="mermaid" id="dg-architecture"></div></div>
+    <figcaption>Solid lines are requests; the dashed line is the server's
+    reply to the downstream reader.</figcaption>
+  </figure>
+
+  <table>
+    <thead><tr><th>Component</th><th>Runs on</th><th>Responsibility</th></tr></thead>
+    <tbody>
+      <tr><td>Intake Device</td><td>Handheld RFID scanner, farm-side</td><td>Tags each bale and records its declared particulars before the truck departs.</td></tr>
+      <tr><td>Checkpoint Reader</td><td>Fixed UHF reader, on the conveyor</td><td>Identifies bales at the weighing station (antenna 1) and re-confirms the outcome downstream (antenna 3).</td></tr>
+      <tr><td>Central Server</td><td>Factory PC</td><td>The single authoritative record of every bale — its declared particulars, its measured weight, and its outcome.</td></tr>
+      <tr><td>Weighing Indicator</td><td>Scale hardware, under the conveyor</td><td>Reports live weight continuously to the server; makes no decisions itself.</td></tr>
+    </tbody>
+  </table>
+
+  <p>The message sequence below traces a single bale through the entire
+  system, in the exact order the messages occur.</p>
+
+  <figure>
+    <p class="figure-label">Figure 5 &middot; Message Sequence</p>
+    <div class="diagram-frame"><div class="mermaid" id="dg-sequence"></div></div>
+    <figcaption>The scale is never queried directly — it streams continuously,
+    and the server itself determines which bale a given reading belongs to.</figcaption>
+  </figure>
+</section>
+
+<!-- ============================================================ 7. TECHNICAL REFERENCE -->
+<section class="doc-section">
+  <div class="section-head"><span class="section-number">7</span><h2>Technical Reference</h2></div>
+  <p class="eyebrow-line">How the source code is actually put together</p>
+
+  <p>This section documents the three codebases individually — what each
+  file is responsible for, how they are wired to one another, the tools used
+  to build and ship each one, and the real problems encountered while
+  building them. It is written for whoever has to open this code next,
+  including myself in a year's time.</p>
+
+  <h3 style="margin-top:9mm;">7.1 &nbsp; MTS Demo — Central Server</h3>
+
+  <p><strong>Stack:</strong> Python 3, Flask, plain TCP sockets. No database
+  — every bale's record lives in memory for the life of the server process.
+  I made that decision deliberately for the pilot: a receiving shift is a
+  bounded window, the record only needs to survive that window, and an
+  in-memory dictionary is one less thing that can go wrong on a factory
+  floor PC with no dedicated database administrator. A persistence layer is
+  a reasonable addition for full deployment and is discussed in
+  Section&nbsp;8.</p>
+
+  <h4>File map</h4>
+  <table>
+    <thead><tr><th>File</th><th>Responsibility</th></tr></thead>
+    <tbody>
+      <tr><td><code>app.py</code></td><td>Every HTTP route, and the background thread that matches scale readings to scanned tags.</td></tr>
+      <tr><td><code>models.py</code></td><td>The in-memory bale registry and all business logic — assignment, scanning, weight validation.</td></tr>
+      <tr><td><code>scale.py</code></td><td>Reads the live weight stream off the scale indicator over TCP.</td></tr>
+      <tr><td><code>templates/index.html</code></td><td>The intake-review page — lists every registered bale.</td></tr>
+      <tr><td><code>templates/factory_processing.html</code></td><td>The live checkpoint page — scale reading, latest outcome, running flagged list.</td></tr>
+    </tbody>
+  </table>
+
+  <h4>Route reference</h4>
+  <table>
+    <thead><tr><th>Route</th><th>Method</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>/api/assign</code></td><td>POST</td><td>Called by the intake handheld to register a bale.</td></tr>
+      <tr><td><code>/scan</code></td><td>POST</td><td>Called by the checkpoint reader's antenna 1 on every identification.</td></tr>
+      <tr><td><code>/validate</code></td><td>POST</td><td>Manual weight override, for when the scale link is unavailable.</td></tr>
+      <tr><td><code>/api/check_tag</code></td><td>POST</td><td>Read-only status lookup, called by the downstream antenna 3.</td></tr>
+      <tr><td><code>/api/tags</code>, <code>/api/latest_scan</code>, <code>/api/stats</code></td><td>GET</td><td>Polled by the live checkpoint page.</td></tr>
+    </tbody>
+  </table>
+
+  <h4>Data model and the status lifecycle</h4>
+  <p>Every bale record carries exactly one status at a time, moving forward
+  through <span class="status-pill assigned">ASSIGNED</span> &rarr;
+  <span class="status-pill scanned">SCANNED</span> &rarr;
+  <span class="status-pill validated">VALIDATED</span> or
+  <span class="status-pill flagged">FLAGGED</span>. All weights are stored
+  internally in grams regardless of what unit is shown on screen — a
+  decision that turned out to matter more than it looked like it would at
+  the time (see the achievement note below).</p>
+
+  <h4>The residual-weight problem</h4>
+  <p>The single hardest problem in this codebase was not the RFID side at
+  all — it was the scale. A conveyor scale never truly returns to zero after
+  a bale is lifted off it; dust, debris, and the platform's own settling
+  leave a small residual reading behind. Left unhandled, that residual gets
+  read as part of the next bale's weight and throws the comparison off by
+  exactly the residual amount.</p>
+
+  <p><code>app.py</code> tracks that residual continuously while no bale is
+  expected, and freezes it the instant a new bale is identified, so the next
+  weighing nets against the correct baseline rather than a stale one. If a
+  scan is never followed by a matching weight — a misread tag, nothing
+  actually placed on the scale — the freeze releases itself automatically
+  after five seconds rather than leaving the server stuck ignoring real
+  residual buildup indefinitely.</p>
+
+  <figure>
+    <p class="figure-label">Figure 6 &middot; The Residual Tracker's Own State</p>
+    <div class="diagram-frame"><div class="mermaid" id="dg-residual"></div></div>
+    <figcaption>Two states only, with a five-second self-correction if a
+    scan is never followed by a matching weight.</figcaption>
+  </figure>
+
+  <div class="achievement">
+    <span class="tag">Problem faced</span>
+    <p>Early testing produced a bale being flagged repeatedly — five separate
+    flagged results for the same tag, three seconds apart, every one of them
+    computing a near-zero weight while the scale itself sat perfectly steady
+    the entire time. I traced it by polling <code>/api/stats</code> live
+    against the running server: an always-on antenna re-identifies a
+    stationary bale roughly every three seconds, and every one of those
+    re-reads was unconditionally re-freezing the residual baseline against
+    the bale's own weight — which nets to approximately zero, reads as "bale
+    is missing," and gets flagged. Because a completed result also reset the
+    bale's status, the next re-read three seconds later looked identical to
+    a fresh arrival, and the cycle repeated for as long as the bale sat in
+    range.</p>
+    <p><strong>Fix:</strong> a result now carries a ten-second cooldown.
+    A re-read of a bale that already has a result within that window is
+    treated as the same bale still sitting there, not a new arrival — its
+    status is left untouched and the residual baseline is not re-frozen
+    against it.</p>
+  </div>
+
+  <div class="achievement">
+    <span class="tag">Problem faced</span>
+    <p>The scale hardware changed mid-project — from an Avery Weigh-Tronix
+    1105 indicator to a Mettler Toledo unit, and back again once the Avery
+    was reinstated as the permanent fixture. Neither indicator ships with
+    usable public documentation for its wire protocol. The Avery streams a
+    continuous framed byte sequence over a raw TCP socket with no request
+    command at all — I identified the frame boundaries and payload format
+    directly from the raw stream. The Mettler unit, by contrast, needed no
+    polling either: once connected over its USB-serial link it streamed
+    plain text in the standard MT-SICS format, reporting its own stability
+    with an S/D flag the Avery does not provide, which meant the Avery
+    integration needed its own software stability detector — a rolling
+    window of samples — that the Mettler integration did not.</p>
+    <p><strong>Result:</strong> <code>scale.py</code> exposes one simple
+    interface, <code>latest_weight()</code>, regardless of which physical
+    protocol sits underneath it — the rest of the server was never aware the
+    hardware changed at all.</p>
+  </div>
+
+  <h4>Tools used</h4>
+  <p>Python 3 with the standard library's <code>socket</code> module for the
+  Avery integration; <code>pyserial</code> for the brief Mettler Toledo
+  trial; Flask for routing; <code>curl</code> for live endpoint testing
+  against the running server during development, which is how the
+  repeated-flag bug above was actually diagnosed — by reading the server's
+  own state back from its API in real time rather than guessing from the
+  code alone.</p>
+</section>
+
+<!-- ---------------------------------------------------------- 7.2 RFID ANTENNA -->
+<section class="doc-section">
+  <h3 style="margin-top:0;">7.2 &nbsp; RFID Antenna — Fixed Checkpoint Reader</h3>
+
+  <p><strong>Stack:</strong> Android (Java), built on the reader
+  manufacturer's own UHF SDK and demo application. The vendor demo ships
+  with a large number of tabs — write, lock, kill, GPIO, firmware upgrade —
+  that are entirely unrelated to bale tracking and were left untouched. The
+  work specific to this project is confined to a small set of new files and
+  one dedicated tab.</p>
+
+  <h4>File map — project-specific code</h4>
+  <table>
+    <thead><tr><th>File</th><th>Responsibility</th></tr></thead>
+    <tbody>
+      <tr><td><code>AntennaDispatcher.java</code></td><td>Routes every tag read to the correct action based on which physical antenna port produced it.</td></tr>
+      <tr><td><code>ScanUploader.java</code></td><td>Posts an identified tag to the server's checkpoint endpoint.</td></tr>
+      <tr><td><code>TagStatusChecker.java</code></td><td>Read-only status lookup used by the downstream antenna.</td></tr>
+      <tr><td><code>ServerConfig.java</code></td><td>Persists the server address, editable from the device's own screen.</td></tr>
+      <tr><td><code>MTSControlFragment.java</code></td><td>A dedicated control tab: independent power for each antenna, one shared start/stop.</td></tr>
+    </tbody>
+  </table>
+
+  <h4>How a read is wired to an action</h4>
+  <p>The reader hardware exposes a single inventory callback regardless of
+  how many antenna ports are physically wired to it, which meant the
+  original vendor tab and the new dedicated tab both needed to feed reads
+  through exactly the same routing logic — otherwise switching between
+  screens on the device could double-fire an upload or silently drop a
+  read's throttle state. <code>AntennaDispatcher</code> exists specifically
+  to be that single shared point: every read, from either tab, passes
+  through <code>onRead(port, tagId)</code>, which checks which port reported
+  it and either uploads it to the checkpoint endpoint or asks for its status
+  at the downstream endpoint, each with its own independent throttle so a
+  bale's reading at one antenna can never suppress its later reading at the
+  other.</p>
+
+  <div class="achievement">
+    <span class="tag">Problem faced</span>
+    <p>The downstream antenna was originally wired to antenna port 2 on the
+    reader. During installation, port 2 turned out to be physically faulty
+    on that specific reader unit. Rather than wait on a hardware replacement,
+    I moved the downstream role to port 3 in software — a one-line constant
+    change — and rewired the physical antenna accordingly. The routing logic
+    in <code>AntennaDispatcher</code> was written generically enough that
+    the actual port number is a constant, not something scattered through
+    the codebase, which is precisely why this took minutes rather than a
+    afternoon of searching.</p>
+  </div>
+
+  <div class="achievement">
+    <span class="tag">Problem faced</span>
+    <p>On an early bench test with both antennas close together and running
+    at full transmit power, the checkpoint antenna kept re-identifying bales
+    that were actually sitting near the downstream antenna, resetting their
+    state before the downstream check could ever see a completed result —
+    which looked, at first, exactly like the downstream check silently
+    failing. It was not a software fault; it was read range. I resolved it
+    by setting both antennas to a conservative default power at connect
+    time, applied automatically rather than left as a manual per-session
+    step, with the exact figure meant to be tuned against the real physical
+    spacing on the production line once installed.</p>
+  </div>
+
+  <div class="achievement">
+    <span class="tag">Problem faced</span>
+    <p>The specific reader unit used for this build has a physically broken
+    display. All on-device verification — confirming a tab renders
+    correctly, confirming a toast message appears — had to be done by
+    mirroring the device's screen to a laptop over its own wireless
+    debugging connection, which itself dropped intermittently and had to be
+    reconnected mid-session more than once. Every screen shown in this
+    document's live testing was captured this way.</p>
+  </div>
+
+  <h4>Tools used</h4>
+  <p>Android Studio and Gradle for the build itself — the build toolchain
+  requires a JDK 17 or newer, which is not this environment's default; the
+  build has to be pointed explicitly at Android Studio's own bundled JDK to
+  compile at all. <code>adb</code> for installation and log inspection, and
+  <code>scrcpy</code> for the screen-mirroring described above, both driven
+  over the reader's wireless debugging connection rather than a physical
+  USB link.</p>
+</section>
+
+<!-- ---------------------------------------------------------- 7.3 SCANNER -->
+<section class="doc-section">
+  <h3 style="margin-top:0;">7.3 &nbsp; Scanner — Intake Handheld Device</h3>
+
+  <p><strong>Stack:</strong> this is not an ordinary Android Studio project.
+  It is the tobacco-industry handheld vendor's own shipped application, with
+  no original source code available anywhere — only the compiled APK.
+  Adding the intake-tagging feature to it meant decompiling it, working
+  entirely in disassembled bytecode and reconstructed Java, and rebuilding a
+  functioning signed APK from that reconstruction. This was, by a clear
+  margin, the most technically demanding piece of the whole project.</p>
+
+  <figure>
+    <p class="figure-label">Figure 7 &middot; The Rebuild Pipeline</p>
+    <div class="diagram-frame"><div class="mermaid" id="dg-pipeline"></div></div>
+    <figcaption>Every change to this application follows this exact path —
+    there is no shortcut, because there is no original source project to
+    open and rebuild directly.</figcaption>
+  </figure>
+
+  <h4>What was added</h4>
+  <table>
+    <thead><tr><th>File</th><th>Responsibility</th></tr></thead>
+    <tbody>
+      <tr><td><code>AssignActivity.java</code></td><td>The new intake-tagging screen: identifies a bale at close range and submits its declared particulars to the server.</td></tr>
+      <tr><td><code>TagCapture.java</code></td><td>A shared hook that lets the new screen read tag identifications the vendor's own existing scan callback already produces, without registering a second, conflicting callback.</td></tr>
+      <tr><td><code>ScanUploader.java</code></td><td>The vendor's own original background uploader — deliberately disabled, not removed (see below).</td></tr>
+    </tbody>
+  </table>
+
+  <div class="achievement">
+    <span class="tag">Achievement</span>
+    <p>The vendor application has exactly one hook into the reader hardware's
+    read callback, already claimed by its existing scan tab. Registering a
+    second callback for the new tagging screen would have silently broken
+    one or the other. Rather than fight that constraint, the new screen
+    reads from a shared static capture point that the existing callback
+    already populates — an additive change that needed no modification to
+    code already proven to work.</p>
+  </div>
+
+  <div class="achievement">
+    <span class="tag">Problem faced</span>
+    <p>The vendor application's own scan tab already had a working uploader
+    to a server endpoint — the same endpoint the fixed checkpoint reader
+    uses for its weighing decision. If that tab were ever left running on
+    the handheld while it was carried around the factory, a stray
+    identification could reach the server out of order and get weighed
+    against the wrong bale entirely, silently corrupting a real result. I
+    disabled that original uploader outright rather than rely on operators
+    remembering not to open that tab — the new tagging screen does not
+    depend on it, so nothing was lost.</p>
+  </div>
+
+  <div class="achievement">
+    <span class="tag">Problem faced</span>
+    <p>The server's address was not configurable in the vendor's uploader at
+    all — it had been compiled directly into the application as a literal
+    string, inlined by the compiler into the disassembled bytecode itself
+    rather than read from a settings value at run time. Correcting it meant
+    editing the literal in two separate disassembled files and rebuilding,
+    rather than changing a single configuration value.</p>
+  </div>
+
+  <h4>Device behaviour worth recording</h4>
+  <p>The handheld's Android <em>Back</em> button disconnects the reader
+  hardware entirely and drops to a low-level reconnect screen — this is
+  vendor behaviour, not something introduced by the patch, but it is not
+  obvious until it happens. The application is also not debuggable in the
+  ordinary sense and its launcher activity is not exported, both of which
+  shaped how verification had to be done on-device rather than through the
+  usual developer tooling.</p>
+
+  <h4>Tools used</h4>
+  <p>Apktool for decompiling resources and disassembling the application
+  into readable smali bytecode and rebuilding the modified result; jadx for
+  cross-referencing that disassembly against reconstructed Java source while
+  working out exactly where the new feature needed to hook in; the Android
+  SDK's own <code>zipalign</code> and <code>apksigner</code> for producing a
+  properly aligned, signed, installable build from the rebuilt package; and
+  a dedicated signing key generated specifically for this patched build,
+  kept separate from any vendor or platform key.</p>
+</section>
+
+<!-- ============================================================ 8. PATH TO DEPLOYMENT -->
+<section class="doc-section">
+  <div class="section-head"><span class="section-number">8</span><h2>Path to Full Deployment</h2></div>
+
+  <p>The pilot line proves the approach works. Taking it from one line to
+  the full seven-line, two-trunk design set out in Section&nbsp;4 is a
+  matter of scope, not of unresolved risk — the validation logic, the
+  hardware integration, and the alarm behaviour are already proven. What
+  remains is genuinely new work, set out honestly below rather than glossed
+  over.</p>
+
+  <h4>Line identification at the server</h4>
+  <p>The current server has no concept of which of several lines a reading
+  came from, because the pilot only ever had one. At full scale, nine
+  reader checkpoints will be reporting concurrently, and the server needs to
+  know which line each reading belongs to so that two bales on two
+  different lines can never be confused with one another. This is a
+  contained change — an identifier travelling alongside each reading — but
+  it touches the core matching logic described in Section&nbsp;7.1 and
+  needs the same careful testing that logic already received.</p>
+
+  <h4>Additional reader hardware</h4>
+  <p>The pilot uses one reader unit. Full deployment needs checkpoint
+  coverage at all seven lines and flag-check coverage at both trunks — nine
+  antenna positions in total, which may be served by more than one physical
+  reader unit depending on cable-run distances on the actual factory floor.</p>
+
+  <h4>A floor-wide live view</h4>
+  <p>The pilot's live page shows one line. A useful full-scale deployment
+  should show all seven at a glance, so a shift supervisor can see the
+  entire receiving floor's state without walking it.</p>
+
+  <h4>Persistence</h4>
+  <p>An in-memory record was the right choice for a single-line pilot. At
+  full scale, with a shift's worth of records across nine checkpoints
+  worth preserving past a server restart, a proper persistence layer
+  becomes worth the added operational complexity.</p>
+
+  <h4>Physical installation and commissioning</h4>
+  <p>Each of the seven lines needs its checkpoint antenna and scale pairing
+  physically installed and power-tuned for its own real spacing, the same
+  tuning process described for the pilot in Section&nbsp;7.2. The two trunk
+  antennas need the same, plus confirmation that the physical convergence
+  point gives each trunk's antenna a clean read on every bale arriving from
+  its three or four contributing lines.</p>
+</section>
+
+<!-- ============================================================ 9. APPENDIX -->
+<section class="doc-section">
+  <div class="section-head"><span class="section-number">9</span><h2>Appendix — Glossary &amp; Reference Tables</h2></div>
+
+  <h4>Status glossary</h4>
+  <table>
+    <thead><tr><th>Status</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td><span class="status-pill assigned">ASSIGNED</span></td><td>Registered at the farm, not yet arrived at a checkpoint.</td></tr>
+      <tr><td><span class="status-pill scanned">SCANNED</span></td><td>Identified at the checkpoint, awaiting a matching weight.</td></tr>
+      <tr><td><span class="status-pill validated">VALIDATED</span></td><td>Measured weight agreed with the declared weight, within tolerance.</td></tr>
+      <tr><td><span class="status-pill flagged">FLAGGED</span></td><td>A discrepancy was found; the bale is withdrawn for review.</td></tr>
+    </tbody>
+  </table>
+
+  <h4>Terms</h4>
+  <table>
+    <thead><tr><th>Term</th><th>Meaning</th></tr></thead>
+    <tbody>
+      <tr><td>UHF RFID</td><td>Ultra-high-frequency radio identification — the passive tag technology used for every bale, readable at a distance without line of sight.</td></tr>
+      <tr><td>EPC</td><td>Electronic Product Code — the identifier encoded on each bale's tag, unique per bale.</td></tr>
+      <tr><td>TID</td><td>Tag Identifier — a second, chip-level identifier some readers report alongside the EPC; the system will match on either.</td></tr>
+      <tr><td>Residual weight</td><td>The small reading a scale continues to report after a bale is lifted off it, from settling and debris; see Section&nbsp;7.1.</td></tr>
+      <tr><td>Antenna 1 / Antenna 3</td><td>The checkpoint (weighing) and downstream (flag-check) roles respectively, named for the physical reader ports they occupy on the pilot line.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="print-footer">
+    <span>MTS &mdash; Mkwawa Tracking System</span>
+    <span>Prepared by Hemed Salum Kabangila</span>
+  </div>
+</section>
+
+<script src="js/mermaid.min.js"></script>
+<script src="js/render.js"></script>
+</body>
+</html>

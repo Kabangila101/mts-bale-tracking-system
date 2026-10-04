@@ -31,3 +31,27 @@ SCANNER/patch_src/smaliout/
 # large. Exact versions + download links are in SCANNER/README.md.
 SCANNER/tools/*.jar
 shortcut.lnk
+
+# --- safety ignores (added during backup) ---
+node_modules/
+venv/
+.venv/
+__pycache__/
+.next/
+dist/
+.gradle/
+*.exe
+*.dll
+.env
+.env.*
+!.env.example
+*.jks
+*.keystore
+keystore.properties
+local.properties
+*.pem
+*.key
+*.p12
+.claude/settings.local.json
+.neon
+~$*

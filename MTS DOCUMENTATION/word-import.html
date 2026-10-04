@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>MTS Documentation</title>
+</head>
+<body style="font-family:Calibri,Arial,sans-serif; font-size:11pt; color:#241a10; line-height:1.5;">
+
+<!-- =============================================================== COVER -->
+<div style="text-align:left; margin-bottom:10pt;">
+  <img src="img/mkwawa-wordmark.png" width="260">
+</div>
+
+<p style="font-family:Calibri; font-weight:bold; font-size:11pt; letter-spacing:2pt; text-transform:uppercase; color:#7a4a23; margin:36pt 0 6pt;">BALE RECEPTION &amp; VALIDATION AUTOMATION</p>
+
+<h1 style="font-family:Cambria; font-size:30pt; color:#241a10; margin:0 0 6pt;">MTS &mdash; Mkwawa Tracking System</h1>
+<p style="font-family:Cambria; font-style:italic; font-size:15pt; color:#143726; margin:0 0 40pt;">System Architecture, Technical Reference &amp; Deployment Roadmap</p>
+
+<table style="width:100%; border-collapse:collapse; border-top:1pt solid #b9a06c; margin-top:24pt;">
+<tr>
+<td style="padding-top:10pt; vertical-align:top;">
+  <p style="font-size:8pt; font-weight:bold; letter-spacing:1pt; text-transform:uppercase; color:#5c4a37; margin:0;">PREPARED BY</p>
+  <p style="font-family:Cambria; font-size:13pt; margin:2pt 0 8pt;">Hemed Salum Kabangila</p>
+  <p style="font-size:8pt; font-weight:bold; letter-spacing:1pt; text-transform:uppercase; color:#5c4a37; margin:0;">ROLE</p>
+  <p style="font-family:Cambria; font-size:13pt; margin:2pt 0 0;">Field Student &mdash; Software Architect &amp; Developer</p>
+</td>
+<td style="padding-top:10pt; vertical-align:top; text-align:right;">
+  <p style="font-size:8pt; font-weight:bold; letter-spacing:1pt; text-transform:uppercase; color:#5c4a37; margin:0;">PREPARED FOR</p>
+  <p style="font-family:Cambria; font-size:13pt; margin:2pt 0 8pt;">Mkwawa Leaf Tobacco Limited</p>
+  <p style="font-size:8pt; font-weight:bold; letter-spacing:1pt; text-transform:uppercase; color:#5c4a37; margin:0;">DATE</p>
+  <p style="font-family:Cambria; font-size:13pt; margin:2pt 0 0;">August 2026</p>
+</td>
+</tr>
+</table>
+
+<br clear="all" style="page-break-before:always">
+
+<!-- =============================================================== TOC -->
+<h2 style="font-family:Cambria; font-size:16pt; color:#241a10; border-bottom:1.5pt solid #b9a06c; padding-bottom:4pt;">Contents</h2>
+<p>1&nbsp;&nbsp;&nbsp;Foreword</p>
+<p>2&nbsp;&nbsp;&nbsp;Executive Summary</p>
+<p>3&nbsp;&nbsp;&nbsp;Current Operations &mdash; The Manual Process</p>
+<p>4&nbsp;&nbsp;&nbsp;The MTS Vision &mdash; Full-Scale Automated Design</p>
+<p>5&nbsp;&nbsp;&nbsp;Proof of Concept &mdash; The Working Demonstration</p>
+<p>6&nbsp;&nbsp;&nbsp;System Architecture</p>
+<p>7&nbsp;&nbsp;&nbsp;Technical Reference</p>
+<p style="margin-left:24pt;">7.1&nbsp;&nbsp;&nbsp;MTS Demo &mdash; Central Server</p>
+<p style="margin-left:24pt;">7.2&nbsp;&nbsp;&nbsp;RFID Antenna &mdash; Fixed Checkpoint Reader</p>
+<p style="margin-left:24pt;">7.3&nbsp;&nbsp;&nbsp;Scanner &mdash; Intake Handheld Device</p>
+<p>8&nbsp;&nbsp;&nbsp;Path to Full Deployment</p>
+<p>9&nbsp;&nbsp;&nbsp;Appendix &mdash; Glossary &amp; Reference Tables</p>
+
+<br clear="all" style="page-break-before:always">
+
+<!-- =============================================================== 1. FOREWORD -->
+<h1 style="font-family:Cambria; font-size:20pt; color:#143726; border-bottom:1.5pt solid #b9a06c; padding-bottom:4pt;">1&nbsp;&nbsp;Foreword</h1>
+
+<p>I wrote the first line of this system after watching a receiving shift at Mkwawa Leaf for the better part of a day. Fourteen people were doing work that came down, in the end, to the same three questions asked over and over: which bale is this, how much does it weigh, and does that number agree with what was declared. Two of those questions can be answered by a chip the size of a fingernail and a scale that already sits under every conveyor. The third is arithmetic.</p>
+
+<p>What follows is my account of building the system that answers those three questions automatically &mdash; why it is built the way it is, what broke along the way and how I fixed it, and what it would take to run it across all seven receiving lines instead of the one I used to prove it out. I have tried to write it so that someone who has never opened the source code can follow the reasoning, and so that someone who has to open the source code next year can find their way around it quickly.</p>
+
+<p style="margin-top:16pt;"><strong>Hemed Salum Kabangila</strong><br>Field Student &mdash; Software Architect &amp; Developer</p>
+
+<br clear="all" style="page-break-before:always">
+
+<!-- =============================================================== 2. EXEC SUMMARY -->
+<h1 style="font-family:Cambria; font-size:20pt; color:#143726; border-bottom:1.5pt solid #b9a06c; padding-bottom:4pt;">2&nbsp;&nbsp;Executive Summary</h1>
+
+<p>Mkwawa Leaf Tobacco Limited receives baled tobacco from contracted farms by truck, across seven receiving conveyor lines. Every bale must be identified and weighed against the figure declared when it was baled, so that discrepancies &mdash; under-filled bales, mislabelled grades, tampering &mdash; are caught before the bale moves further into the factory. Today that identification and weighing is done by hand, at every line, by an operator with a barcode scanner and a scale wired to a PC. A second worker per line stands by to physically remove any bale the computer flags. Fourteen people are committed to this single step of the receiving process.</p>
+
+<p>MTS &mdash; the Mkwawa Tracking System &mdash; replaces the barcode scanner and the manual read with passive UHF RFID. A bale is tagged once, at the farm, when it is packed onto the truck. From that point forward nobody needs to scan anything by hand: a fixed reader at the checkpoint identifies the bale automatically as it passes, the scale beneath it reports the weight, and a central server makes the validation decision in well under a second. A second, independent reader further down the line re-checks the outcome and sounds an alarm only if the bale was flagged, so that the one remaining worker per offload point knows exactly which bale to pull.</p>
+
+<table style="width:100%; border-collapse:collapse; margin:16pt 0;">
+<tr>
+<td style="width:33%; text-align:center; border:1pt solid #b9a06c; background:#f7f3e9; padding:10pt;"><span style="font-family:Cambria; font-weight:bold; font-size:22pt; color:#143726;">14 &rarr; 2</span><br><span style="font-size:8pt; font-weight:bold; letter-spacing:0.5pt; text-transform:uppercase; color:#5c4a37;">Workers required, full deployment</span></td>
+<td style="width:33%; text-align:center; border:1pt solid #b9a06c; background:#f7f3e9; padding:10pt;"><span style="font-family:Cambria; font-weight:bold; font-size:22pt; color:#143726;">7</span><br><span style="font-size:8pt; font-weight:bold; letter-spacing:0.5pt; text-transform:uppercase; color:#5c4a37;">Receiving lines covered</span></td>
+<td style="width:33%; text-align:center; border:1pt solid #b9a06c; background:#f7f3e9; padding:10pt;"><span style="font-family:Cambria; font-weight:bold; font-size:22pt; color:#143726;">&lt;1s</span><br><span style="font-size:8pt; font-weight:bold; letter-spacing:0.5pt; text-transform:uppercase; color:#5c4a37;">Validation decision time</span></td>
+</tr>
+</table>
+
+<p>The system described in this document has been built and proven on a single receiving line &mdash; end to end, from farm-side tagging through to a live flagged-bale alarm &mdash; and is documented here exactly as it stands today. Section&nbsp;4 sets out the full seven-line design this pilot is built to scale into; Section&nbsp;8 sets out precisely what stands between the current pilot and that full deployment. Nothing in this document describes work that has not actually been built, tested, and run against real hardware on the factory floor, except where it is explicitly marked as a proposal for the next phase.</p>
+
+<br clear="all" style="page-break-before:always">
+
+<!-- =============================================================== 3. CURRENT OPERATIONS -->
+<h1 style="font-family:Cambria; font-size:20pt; color:#143726; border-bottom:1.5pt solid #b9a06c; padding-bottom:4pt;">3&nbsp;&nbsp;Current Operations &mdash; The Manual Process</h1>
+
+<p>Mkwawa Leaf's receiving floor has seven conveyor lines, each fed directly by trucks arriving from contracted farms. Each line runs the same manual process, independently, with its own staff and its own equipment:</p>
+
+<p style="font-weight:bold; font-size:8pt; letter-spacing:1pt; text-transform:uppercase; color:#7a4a23; margin-bottom:4pt;">FIGURE 1 &middot; THE MANUAL PROCESS, PER LINE</p>
+<div style="border:1pt solid #b9a06c; padding:10pt; text-align:center;"><img src="img/diagrams/dg-manual.png" width="620"></div>
+<p style="font-size:9pt; color:#5c4a37; font-style:italic; margin-top:4pt;">Identical at all seven lines. The barcode scanner and the scale are both wired directly into the line's own PC; nothing is shared or centralised between lines.</p>
+
+<p>An operator stationed at the line holds a wired barcode scanner. As each bale arrives, they physically locate its barcode sticker, scan it, and the PC looks up the bale's declared weight and grade. The scale &mdash; connected to the same PC over a serial cable &mdash; reports the bale's actual weight, and the PC's software compares the two figures and marks the bale as passed or flagged. A second worker, stationed just past the scale, watches for a flagged result and physically lifts that bale off the conveyor by hand.</p>
+
+<p>This works, and it has worked for years, but it has three costs that compound across seven lines running in parallel:</p>
+
+<h3 style="font-family:Cambria; font-size:12pt; color:#7a4a23; margin:14pt 0 4pt;">Labour</h3>
+<p>Two people per line, seven lines, every shift: fourteen people whose entire task is reading a barcode and watching for a flag. None of them are doing anything a computer cannot do faster and more consistently.</p>
+
+<h3 style="font-family:Cambria; font-size:12pt; color:#7a4a23; margin:14pt 0 4pt;">Speed</h3>
+<p>Each bale waits on a human to physically aim a scanner at its barcode and pull the trigger. On a receiving floor moving hundreds of bales a shift, that single manual step sets the pace for the entire line.</p>
+
+<h3 style="font-family:Cambria; font-size:12pt; color:#7a4a23; margin:14pt 0 4pt;">Consistency</h3>
+<p>A barcode sticker that has been rained on, folded, or partially torn in transit is unreadable to a scanner in a way it would not be to an RFID reader, which does not require line of sight or an intact printed surface. A tired operator on a long shift can also simply miss a bale, or scan the wrong one, in a way an automated checkpoint cannot.</p>
+
+<br clear="all" style="page-break-before:always">
+
+<!-- =============================================================== 4. THE VISION -->
+<h1 style="font-family:Cambria; font-size:20pt; color:#143726; border-bottom:1.5pt solid #b9a06c; padding-bottom:4pt;">4&nbsp;&nbsp;The MTS Vision &mdash; Full-Scale Automated Design</h1>
+
+<p>The design I am proposing keeps the physical layout of the receiving floor exactly as it is &mdash; seven lines, trucks unloading as they do today &mdash; and replaces only the identification and weighing step at each line, plus the offload step at the end. Nothing about how bales are trucked in or how they move once past the checkpoint changes.</p>
+
+<p>Every one of the seven lines gets its own RFID checkpoint: a fixed reader antenna positioned over the conveyor, paired with the same scale already installed there. As a tagged bale passes, the reader identifies it and the scale weighs it; the central server validates the two figures against each other and records the outcome. The bale is not stopped or slowed for this &mdash; it continues moving regardless of the result, the same way it does under the manual process today.</p>
+
+<p>Every one of those seven checkpoints reports back to the same central server independently and continuously &mdash; there is no per-line dashboard, no separate record per conveyor. One supervisor watching one screen can see every line's activity as it happens, which is not something the current manual setup, with seven standalone PCs, offers at all today.</p>
+
+<p>Downstream of the seven individual lines, the physical conveyors themselves already merge: three of the seven lines feed into one trunk conveyor, and the remaining four feed into a second trunk. This is where the second checkpoint sits &mdash; one antenna per trunk, positioned right at the point where a worker is already needed to receive bales off that trunk. That antenna asks the same central server whether the bale passing it was flagged upstream, and sounds the reader's own alarm if so, telling the worker at that exact spot to pull it.</p>
+
+<p style="font-weight:bold; font-size:8pt; letter-spacing:1pt; text-transform:uppercase; color:#7a4a23; margin-bottom:4pt;">FIGURE 2 &middot; FULL SEVEN-LINE TOPOLOGY</p>
+<div style="border:1pt solid #b9a06c; padding:10pt; text-align:center;"><img src="img/diagrams/dg-vision.png" width="640"></div>
+<p style="font-size:9pt; color:#5c4a37; font-style:italic; margin-top:4pt;">Three lines converge to the right trunk, four to the left. Every checkpoint &mdash; all seven upstream, both downstream &mdash; reports to one central server (dotted lines); only the two offload points still require a person.</p>
+
+<p style="font-weight:bold; font-size:8pt; letter-spacing:1pt; text-transform:uppercase; color:#7a4a23; margin:14pt 0 4pt;">FIGURE 2A &middot; ORIGINAL SITE-PLANNING SKETCH</p>
+<div style="border:1pt solid #b9a06c; padding:10pt; text-align:center;"><img src="img/site-plan-sketch.jpeg" width="640"></div>
+<p style="font-size:9pt; color:#5c4a37; font-style:italic; margin-top:4pt;">The layout Figure 2 was engineered from &mdash; seven receiving points, two alarm/offload checkpoints, and every reader wired back to one monitoring station.</p>
+
+<p>The arithmetic is straightforward. Fourteen people are needed today because the identification-and-weigh step is manual at all seven lines, and because every line needs its own dedicated offload worker. Once that step is automatic everywhere, the only work left for a human is physically lifting a flagged bale off a conveyor &mdash; and because the seven lines physically converge into two trunks before that has to happen, two people, one per trunk, can cover all seven lines between them.</p>
+
+<table style="width:100%; border-collapse:collapse; margin:16pt 0;">
+<tr>
+<td style="width:33%; text-align:center; border:1pt solid #b9a06c; background:#f7f3e9; padding:10pt;"><span style="font-family:Cambria; font-weight:bold; font-size:20pt; color:#143726;">7 &rarr; 2</span><br><span style="font-size:8pt; font-weight:bold; letter-spacing:0.5pt; text-transform:uppercase; color:#5c4a37;">Trunk convergence (3 right, 4 left)</span></td>
+<td style="width:33%; text-align:center; border:1pt solid #b9a06c; background:#f7f3e9; padding:10pt;"><span style="font-family:Cambria; font-weight:bold; font-size:20pt; color:#143726;">9</span><br><span style="font-size:8pt; font-weight:bold; letter-spacing:0.5pt; text-transform:uppercase; color:#5c4a37;">Reader checkpoints at full scale</span></td>
+<td style="width:33%; text-align:center; border:1pt solid #b9a06c; background:#f7f3e9; padding:10pt;"><span style="font-family:Cambria; font-weight:bold; font-size:20pt; color:#143726;">14 &rarr; 2</span><br><span style="font-size:8pt; font-weight:bold; letter-spacing:0.5pt; text-transform:uppercase; color:#5c4a37;">Total receiving-floor headcount</span></td>
+</tr>
+</table>
+
+<br clear="all" style="page-break-before:always">
+
+<!-- =============================================================== 5. PROOF OF CONCEPT -->
+<h1 style="font-family:Cambria; font-size:20pt; color:#143726; border-bottom:1.5pt solid #b9a06c; padding-bottom:4pt;">5&nbsp;&nbsp;Proof of Concept &mdash; The Working Demonstration</h1>
+
+<p>Before proposing that Mkwawa Leaf commit to re-equipping all seven lines, I built the complete system end to end on one line, so that the validation logic, the hardware integration, and the alarm behaviour could all be proven against real bales before a single additional antenna was purchased. Everything described in this section is built, installed, and has been run against real tagged bales and a real scale on the factory floor &mdash; it is not a simulation.</p>
+
+<p style="font-weight:bold; font-size:8pt; letter-spacing:1pt; text-transform:uppercase; color:#7a4a23; margin-bottom:4pt;">FIGURE 3 &middot; THE BALE JOURNEY &mdash; AS BUILT</p>
+<div style="border:1pt solid #b9a06c; padding:10pt; text-align:center;"><img src="img/diagrams/dg-journey.png" width="660"></div>
+<p style="font-size:9pt; color:#5c4a37; font-style:italic; margin-top:4pt;">The complete path a single bale follows on the pilot line, from farm-side tagging through to the flagged-bale alarm.</p>
+
+<h3 style="font-family:Cambria; font-size:12pt; color:#7a4a23; margin:14pt 0 4pt;">Stage 0 &mdash; Tagging at the farm</h3>
+<p>Before a bale ever leaves the farm, the person packing the truck identifies it with a handheld RFID device and records its bale number, grade, farm, farmer, truck, and declared weight. That record is sent immediately to the central server, so by the time the truck reaches Mkwawa Leaf, every bale on it already has a record waiting for it.</p>
+
+<h3 style="font-family:Cambria; font-size:12pt; color:#7a4a23; margin:14pt 0 4pt;">Station 1 &mdash; The checkpoint</h3>
+<p>As the bale reaches the pilot conveyor, the fixed reader's first antenna identifies its tag and reports it to the server, which opens a short window to receive a weight. The scale beneath the conveyor streams its reading continuously; the server matches a stable reading to the bale that was just identified, nets out any residual weight left on the platform from the previous bale, and compares the result against the bale's declared weight to within a published tolerance. The outcome &mdash; validated or flagged, with a stated reason if flagged &mdash; is recorded immediately.</p>
+
+<h3 style="font-family:Cambria; font-size:12pt; color:#7a4a23; margin:14pt 0 4pt;">Downstream &mdash; The flag check</h3>
+<p>A second antenna, further along the same conveyor, identifies the bale again and asks the server, read-only, whether it was flagged. If it was, the reader's own alarm sounds &mdash; several short pulses, distinct from its routine per-read acknowledgement &mdash; so the bale can be pulled before it proceeds any further. If it was not flagged, nothing happens at all; the system produces no output for a bale that requires no action, which is deliberate, since a constant stream of confirmations for ordinary bales would train an operator to ignore the alarm altogether.</p>
+
+<p>This single-line build is what all of the technical detail in Section&nbsp;7 describes. It is also what has been demonstrated live: a tag placed near the checkpoint antenna has been shown, in real time, to reach the server and appear in its records within seconds, and a deliberately under-weight bale has been shown to be correctly flagged and to trigger the downstream alarm.</p>
+
+<br clear="all" style="page-break-before:always">
+
+<!-- =============================================================== 6. SYSTEM ARCHITECTURE -->
+<h1 style="font-family:Cambria; font-size:20pt; color:#143726; border-bottom:1.5pt solid #b9a06c; padding-bottom:4pt;">6&nbsp;&nbsp;System Architecture</h1>
+
+<p>Three independent pieces of software carry out the process described above, coordinated through one central server that is the sole holder of every bale's record. None of the three ever communicate directly with one another &mdash; each reports to the server, and the server alone decides what happens next.</p>
+
+<p style="font-weight:bold; font-size:8pt; letter-spacing:1pt; text-transform:uppercase; color:#7a4a23; margin-bottom:4pt;">FIGURE 4 &middot; SYSTEM ARCHITECTURE</p>
+<div style="border:1pt solid #b9a06c; padding:10pt; text-align:center;"><img src="img/diagrams/dg-architecture.png" width="420"></div>
+<p style="font-size:9pt; color:#5c4a37; font-style:italic; margin-top:4pt;">Solid lines are requests; the dashed line is the server's reply to the downstream reader.</p>
+
+<table style="width:100%; border-collapse:collapse; margin:14pt 0; font-size:10pt;">
+<tr style="background:#fefdfb;"><th style="text-align:left; border-bottom:1.5pt solid #b9a06c; padding:5pt; color:#7a4a23; font-size:8pt; text-transform:uppercase;">Component</th><th style="text-align:left; border-bottom:1.5pt solid #b9a06c; padding:5pt; color:#7a4a23; font-size:8pt; text-transform:uppercase;">Runs on</th><th style="text-align:left; border-bottom:1.5pt solid #b9a06c; padding:5pt; color:#7a4a23; font-size:8pt; text-transform:uppercase;">Responsibility</th></tr>
+<tr><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">Intake Device</td><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">Handheld RFID scanner, farm-side</td><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">Tags each bale and records its declared particulars before the truck departs.</td></tr>
+<tr><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">Checkpoint Reader</td><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">Fixed UHF reader, on the conveyor</td><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">Identifies bales at the weighing station (antenna 1) and re-confirms the outcome downstream (antenna 3).</td></tr>
+<tr><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">Central Server</td><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">Factory PC</td><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">The single authoritative record of every bale &mdash; its declared particulars, its measured weight, and its outcome.</td></tr>
+<tr><td style="padding:5pt;">Weighing Indicator</td><td style="padding:5pt;">Scale hardware, under the conveyor</td><td style="padding:5pt;">Reports live weight continuously to the server; makes no decisions itself.</td></tr>
+</table>
+
+<p>The message sequence below traces a single bale through the entire system, in the exact order the messages occur.</p>
+
+<p style="font-weight:bold; font-size:8pt; letter-spacing:1pt; text-transform:uppercase; color:#7a4a23; margin-bottom:4pt;">FIGURE 5 &middot; MESSAGE SEQUENCE</p>
+<div style="border:1pt solid #b9a06c; padding:10pt; text-align:center;"><img src="img/diagrams/dg-sequence.png" width="560"></div>
+<p style="font-size:9pt; color:#5c4a37; font-style:italic; margin-top:4pt;">The scale is never queried directly &mdash; it streams continuously, and the server itself determines which bale a given reading belongs to.</p>
+
+<br clear="all" style="page-break-before:always">
+
+<!-- =============================================================== 7. TECHNICAL REFERENCE -->
+<h1 style="font-family:Cambria; font-size:20pt; color:#143726; border-bottom:1.5pt solid #b9a06c; padding-bottom:4pt;">7&nbsp;&nbsp;Technical Reference</h1>
+<p style="font-weight:bold; font-size:9pt; letter-spacing:1pt; text-transform:uppercase; color:#7a4a23;">How the source code is actually put together</p>
+
+<p>This section documents the three codebases individually &mdash; what each file is responsible for, how they are wired to one another, the tools used to build and ship each one, and the real problems encountered while building them. It is written for whoever has to open this code next, including myself in a year's time.</p>
+
+<h2 style="font-family:Cambria; font-size:15pt; color:#143726; margin-top:20pt;">7.1&nbsp;&nbsp;MTS Demo &mdash; Central Server</h2>
+
+<p><strong>Stack:</strong> Python 3, Flask, plain TCP sockets. No database &mdash; every bale's record lives in memory for the life of the server process. I made that decision deliberately for the pilot: a receiving shift is a bounded window, the record only needs to survive that window, and an in-memory dictionary is one less thing that can go wrong on a factory floor PC with no dedicated database administrator. A persistence layer is a reasonable addition for full deployment and is discussed in Section&nbsp;8.</p>
+
+<h3 style="font-family:Cambria; font-size:12pt; color:#7a4a23; margin:14pt 0 4pt;">File map</h3>
+<table style="width:100%; border-collapse:collapse; margin:6pt 0; font-size:10pt;">
+<tr><th style="text-align:left; border-bottom:1.5pt solid #b9a06c; padding:5pt; color:#7a4a23; font-size:8pt; text-transform:uppercase;">File</th><th style="text-align:left; border-bottom:1.5pt solid #b9a06c; padding:5pt; color:#7a4a23; font-size:8pt; text-transform:uppercase;">Responsibility</th></tr>
+<tr><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;"><code>app.py</code></td><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">Every HTTP route, and the background thread that matches scale readings to scanned tags.</td></tr>
+<tr><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;"><code>models.py</code></td><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">The in-memory bale registry and all business logic &mdash; assignment, scanning, weight validation.</td></tr>
+<tr><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;"><code>scale.py</code></td><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">Reads the live weight stream off the scale indicator over TCP.</td></tr>
+<tr><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;"><code>templates/index.html</code></td><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">The intake-review page &mdash; lists every registered bale.</td></tr>
+<tr><td style="padding:5pt;"><code>templates/factory_processing.html</code></td><td style="padding:5pt;">The live checkpoint page &mdash; scale reading, latest outcome, running flagged list.</td></tr>
+</table>
+
+<h3 style="font-family:Cambria; font-size:12pt; color:#7a4a23; margin:14pt 0 4pt;">Route reference</h3>
+<table style="width:100%; border-collapse:collapse; margin:6pt 0; font-size:10pt;">
+<tr><th style="text-align:left; border-bottom:1.5pt solid #b9a06c; padding:5pt; color:#7a4a23; font-size:8pt; text-transform:uppercase;">Route</th><th style="text-align:left; border-bottom:1.5pt solid #b9a06c; padding:5pt; color:#7a4a23; font-size:8pt; text-transform:uppercase;">Method</th><th style="text-align:left; border-bottom:1.5pt solid #b9a06c; padding:5pt; color:#7a4a23; font-size:8pt; text-transform:uppercase;">Purpose</th></tr>
+<tr><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;"><code>/api/assign</code></td><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">POST</td><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">Called by the intake handheld to register a bale.</td></tr>
+<tr><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;"><code>/scan</code></td><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">POST</td><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">Called by the checkpoint reader's antenna 1 on every identification.</td></tr>
+<tr><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;"><code>/validate</code></td><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">POST</td><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">Manual weight override, for when the scale link is unavailable.</td></tr>
+<tr><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;"><code>/api/check_tag</code></td><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">POST</td><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">Read-only status lookup, called by the downstream antenna 3.</td></tr>
+<tr><td style="padding:5pt;"><code>/api/tags, /api/latest_scan, /api/stats</code></td><td style="padding:5pt;">GET</td><td style="padding:5pt;">Polled by the live checkpoint page.</td></tr>
+</table>
+
+<h3 style="font-family:Cambria; font-size:12pt; color:#7a4a23; margin:14pt 0 4pt;">Data model and the status lifecycle</h3>
+<p>Every bale record carries exactly one status at a time, moving forward through <span style="background:#6b5a44; color:#fbf7ec; padding:1pt 6pt; font-size:8pt; font-weight:bold;">ASSIGNED</span> &rarr; <span style="background:#8a6a1f; color:#fbf7ec; padding:1pt 6pt; font-size:8pt; font-weight:bold;">SCANNED</span> &rarr; <span style="background:#2f6b45; color:#fbf7ec; padding:1pt 6pt; font-size:8pt; font-weight:bold;">VALIDATED</span> or <span style="background:#8a3b28; color:#fbf7ec; padding:1pt 6pt; font-size:8pt; font-weight:bold;">FLAGGED</span>. All weights are stored internally in grams regardless of what unit is shown on screen &mdash; a decision that turned out to matter more than it looked like it would at the time (see the achievement note below).</p>
+
+<h3 style="font-family:Cambria; font-size:12pt; color:#7a4a23; margin:14pt 0 4pt;">The residual-weight problem</h3>
+<p>The single hardest problem in this codebase was not the RFID side at all &mdash; it was the scale. A conveyor scale never truly returns to zero after a bale is lifted off it; dust, debris, and the platform's own settling leave a small residual reading behind. Left unhandled, that residual gets read as part of the next bale's weight and throws the comparison off by exactly the residual amount.</p>
+<p><code>app.py</code> tracks that residual continuously while no bale is expected, and freezes it the instant a new bale is identified, so the next weighing nets against the correct baseline rather than a stale one. If a scan is never followed by a matching weight &mdash; a misread tag, nothing actually placed on the scale &mdash; the freeze releases itself automatically after five seconds rather than leaving the server stuck ignoring real residual buildup indefinitely.</p>
+
+<p style="font-weight:bold; font-size:8pt; letter-spacing:1pt; text-transform:uppercase; color:#7a4a23; margin-bottom:4pt;">FIGURE 6 &middot; THE RESIDUAL TRACKER'S OWN STATE</p>
+<div style="border:1pt solid #b9a06c; padding:10pt; text-align:center;"><img src="img/diagrams/dg-residual.png" width="400"></div>
+<p style="font-size:9pt; color:#5c4a37; font-style:italic; margin-top:4pt;">Two states only, with a five-second self-correction if a scan is never followed by a matching weight.</p>
+
+<table style="border-collapse:collapse; margin:10pt 0; width:100%;"><tr><td style="border-left:3pt solid #1e4d33; padding:6pt 0 6pt 12pt;">
+<p style="font-weight:bold; font-size:8pt; letter-spacing:1pt; text-transform:uppercase; color:#143726; margin:0 0 3pt;">PROBLEM FACED</p>
+<p style="margin:0 0 6pt;">Early testing produced a bale being flagged repeatedly &mdash; five separate flagged results for the same tag, three seconds apart, every one of them computing a near-zero weight while the scale itself sat perfectly steady the entire time. I traced it by polling <code>/api/stats</code> live against the running server: an always-on antenna re-identifies a stationary bale roughly every three seconds, and every one of those re-reads was unconditionally re-freezing the residual baseline against the bale's own weight &mdash; which nets to approximately zero, reads as &ldquo;bale is missing,&rdquo; and gets flagged. Because a completed result also reset the bale's status, the next re-read three seconds later looked identical to a fresh arrival, and the cycle repeated for as long as the bale sat in range.</p>
+<p style="margin:0;"><strong>Fix:</strong> a result now carries a ten-second cooldown. A re-read of a bale that already has a result within that window is treated as the same bale still sitting there, not a new arrival &mdash; its status is left untouched and the residual baseline is not re-frozen against it.</p>
+</td></tr></table>
+
+<p style="margin:4pt 0;"></p>
+
+<table style="border-collapse:collapse; margin:10pt 0; width:100%;"><tr><td style="border-left:3pt solid #1e4d33; padding:6pt 0 6pt 12pt;">
+<p style="font-weight:bold; font-size:8pt; letter-spacing:1pt; text-transform:uppercase; color:#143726; margin:0 0 3pt;">PROBLEM FACED</p>
+<p style="margin:0 0 6pt;">The scale hardware changed mid-project &mdash; from an Avery Weigh-Tronix 1105 indicator to a Mettler Toledo unit, and back again once the Avery was reinstated as the permanent fixture. Neither indicator ships with usable public documentation for its wire protocol. The Avery streams a continuous framed byte sequence over a raw TCP socket with no request command at all &mdash; I identified the frame boundaries and payload format directly from the raw stream. The Mettler unit, by contrast, needed no polling either: once connected over its USB-serial link it streamed plain text in the standard MT-SICS format, reporting its own stability with an S/D flag the Avery does not provide, which meant the Avery integration needed its own software stability detector &mdash; a rolling window of samples &mdash; that the Mettler integration did not.</p>
+<p style="margin:0;"><strong>Result:</strong> <code>scale.py</code> exposes one simple interface, <code>latest_weight()</code>, regardless of which physical protocol sits underneath it &mdash; the rest of the server was never aware the hardware changed at all.</p>
+</td></tr></table>
+
+<h3 style="font-family:Cambria; font-size:12pt; color:#7a4a23; margin:14pt 0 4pt;">Tools used</h3>
+<p>Python 3 with the standard library's <code>socket</code> module for the Avery integration; <code>pyserial</code> for the brief Mettler Toledo trial; Flask for routing; <code>curl</code> for live endpoint testing against the running server during development, which is how the repeated-flag bug above was actually diagnosed &mdash; by reading the server's own state back from its API in real time rather than guessing from the code alone.</p>
+
+<br clear="all" style="page-break-before:always">
+
+<h2 style="font-family:Cambria; font-size:15pt; color:#143726; margin-top:0;">7.2&nbsp;&nbsp;RFID Antenna &mdash; Fixed Checkpoint Reader</h2>
+
+<p><strong>Stack:</strong> Android (Java), built on the reader manufacturer's own UHF SDK and demo application. The vendor demo ships with a large number of tabs &mdash; write, lock, kill, GPIO, firmware upgrade &mdash; that are entirely unrelated to bale tracking and were left untouched. The work specific to this project is confined to a small set of new files and one dedicated tab.</p>
+
+<h3 style="font-family:Cambria; font-size:12pt; color:#7a4a23; margin:14pt 0 4pt;">File map &mdash; project-specific code</h3>
+<table style="width:100%; border-collapse:collapse; margin:6pt 0; font-size:10pt;">
+<tr><th style="text-align:left; border-bottom:1.5pt solid #b9a06c; padding:5pt; color:#7a4a23; font-size:8pt; text-transform:uppercase;">File</th><th style="text-align:left; border-bottom:1.5pt solid #b9a06c; padding:5pt; color:#7a4a23; font-size:8pt; text-transform:uppercase;">Responsibility</th></tr>
+<tr><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;"><code>AntennaDispatcher.java</code></td><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">Routes every tag read to the correct action based on which physical antenna port produced it.</td></tr>
+<tr><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;"><code>ScanUploader.java</code></td><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">Posts an identified tag to the server's checkpoint endpoint.</td></tr>
+<tr><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;"><code>TagStatusChecker.java</code></td><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">Read-only status lookup used by the downstream antenna.</td></tr>
+<tr><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;"><code>ServerConfig.java</code></td><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">Persists the server address, editable from the device's own screen.</td></tr>
+<tr><td style="padding:5pt;"><code>MTSControlFragment.java</code></td><td style="padding:5pt;">A dedicated control tab: independent power for each antenna, one shared start/stop.</td></tr>
+</table>
+
+<h3 style="font-family:Cambria; font-size:12pt; color:#7a4a23; margin:14pt 0 4pt;">How a read is wired to an action</h3>
+<p>The reader hardware exposes a single inventory callback regardless of how many antenna ports are physically wired to it, which meant the original vendor tab and the new dedicated tab both needed to feed reads through exactly the same routing logic &mdash; otherwise switching between screens on the device could double-fire an upload or silently drop a read's throttle state. <code>AntennaDispatcher</code> exists specifically to be that single shared point: every read, from either tab, passes through <code>onRead(port, tagId)</code>, which checks which port reported it and either uploads it to the checkpoint endpoint or asks for its status at the downstream endpoint, each with its own independent throttle so a bale's reading at one antenna can never suppress its later reading at the other.</p>
+
+<table style="border-collapse:collapse; margin:10pt 0; width:100%;"><tr><td style="border-left:3pt solid #1e4d33; padding:6pt 0 6pt 12pt;">
+<p style="font-weight:bold; font-size:8pt; letter-spacing:1pt; text-transform:uppercase; color:#143726; margin:0 0 3pt;">PROBLEM FACED</p>
+<p style="margin:0;">The downstream antenna was originally wired to antenna port 2 on the reader. During installation, port 2 turned out to be physically faulty on that specific reader unit. Rather than wait on a hardware replacement, I moved the downstream role to port 3 in software &mdash; a one-line constant change &mdash; and rewired the physical antenna accordingly. The routing logic in <code>AntennaDispatcher</code> was written generically enough that the actual port number is a constant, not something scattered through the codebase, which is precisely why this took minutes rather than an afternoon of searching.</p>
+</td></tr></table>
+
+<p style="margin:4pt 0;"></p>
+
+<table style="border-collapse:collapse; margin:10pt 0; width:100%;"><tr><td style="border-left:3pt solid #1e4d33; padding:6pt 0 6pt 12pt;">
+<p style="font-weight:bold; font-size:8pt; letter-spacing:1pt; text-transform:uppercase; color:#143726; margin:0 0 3pt;">PROBLEM FACED</p>
+<p style="margin:0;">On an early bench test with both antennas close together and running at full transmit power, the checkpoint antenna kept re-identifying bales that were actually sitting near the downstream antenna, resetting their state before the downstream check could ever see a completed result &mdash; which looked, at first, exactly like the downstream check silently failing. It was not a software fault; it was read range. I resolved it by setting both antennas to a conservative default power at connect time, applied automatically rather than left as a manual per-session step, with the exact figure meant to be tuned against the real physical spacing on the production line once installed.</p>
+</td></tr></table>
+
+<p style="margin:4pt 0;"></p>
+
+<table style="border-collapse:collapse; margin:10pt 0; width:100%;"><tr><td style="border-left:3pt solid #1e4d33; padding:6pt 0 6pt 12pt;">
+<p style="font-weight:bold; font-size:8pt; letter-spacing:1pt; text-transform:uppercase; color:#143726; margin:0 0 3pt;">PROBLEM FACED</p>
+<p style="margin:0;">The specific reader unit used for this build has a physically broken display. All on-device verification &mdash; confirming a tab renders correctly, confirming a toast message appears &mdash; had to be done by mirroring the device's screen to a laptop over its own wireless debugging connection, which itself dropped intermittently and had to be reconnected mid-session more than once. Every screen shown in this document's live testing was captured this way.</p>
+</td></tr></table>
+
+<h3 style="font-family:Cambria; font-size:12pt; color:#7a4a23; margin:14pt 0 4pt;">Tools used</h3>
+<p>Android Studio and Gradle for the build itself &mdash; the build toolchain requires a JDK 17 or newer, which is not this environment's default; the build has to be pointed explicitly at Android Studio's own bundled JDK to compile at all. <code>adb</code> for installation and log inspection, and <code>scrcpy</code> for the screen-mirroring described above, both driven over the reader's wireless debugging connection rather than a physical USB link.</p>
+
+<br clear="all" style="page-break-before:always">
+
+<h2 style="font-family:Cambria; font-size:15pt; color:#143726; margin-top:0;">7.3&nbsp;&nbsp;Scanner &mdash; Intake Handheld Device</h2>
+
+<p><strong>Stack:</strong> this is not an ordinary Android Studio project. It is the tobacco-industry handheld vendor's own shipped application, with no original source code available anywhere &mdash; only the compiled APK. Adding the intake-tagging feature to it meant decompiling it, working entirely in disassembled bytecode and reconstructed Java, and rebuilding a functioning signed APK from that reconstruction. This was, by a clear margin, the most technically demanding piece of the whole project.</p>
+
+<p style="font-weight:bold; font-size:8pt; letter-spacing:1pt; text-transform:uppercase; color:#7a4a23; margin-bottom:4pt;">FIGURE 7 &middot; THE REBUILD PIPELINE</p>
+<div style="border:1pt solid #b9a06c; padding:10pt; text-align:center;"><img src="img/diagrams/dg-pipeline.png" width="640"></div>
+<p style="font-size:9pt; color:#5c4a37; font-style:italic; margin-top:4pt;">Every change to this application follows this exact path &mdash; there is no shortcut, because there is no original source project to open and rebuild directly.</p>
+
+<h3 style="font-family:Cambria; font-size:12pt; color:#7a4a23; margin:14pt 0 4pt;">What was added</h3>
+<table style="width:100%; border-collapse:collapse; margin:6pt 0; font-size:10pt;">
+<tr><th style="text-align:left; border-bottom:1.5pt solid #b9a06c; padding:5pt; color:#7a4a23; font-size:8pt; text-transform:uppercase;">File</th><th style="text-align:left; border-bottom:1.5pt solid #b9a06c; padding:5pt; color:#7a4a23; font-size:8pt; text-transform:uppercase;">Responsibility</th></tr>
+<tr><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;"><code>AssignActivity.java</code></td><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">The new intake-tagging screen: identifies a bale at close range and submits its declared particulars to the server.</td></tr>
+<tr><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;"><code>TagCapture.java</code></td><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">A shared hook that lets the new screen read tag identifications the vendor's own existing scan callback already produces, without registering a second, conflicting callback.</td></tr>
+<tr><td style="padding:5pt;"><code>ScanUploader.java</code></td><td style="padding:5pt;">The vendor's own original background uploader &mdash; deliberately disabled, not removed (see below).</td></tr>
+</table>
+
+<table style="border-collapse:collapse; margin:10pt 0; width:100%;"><tr><td style="border-left:3pt solid #1e4d33; padding:6pt 0 6pt 12pt;">
+<p style="font-weight:bold; font-size:8pt; letter-spacing:1pt; text-transform:uppercase; color:#143726; margin:0 0 3pt;">ACHIEVEMENT</p>
+<p style="margin:0;">The vendor application has exactly one hook into the reader hardware's read callback, already claimed by its existing scan tab. Registering a second callback for the new tagging screen would have silently broken one or the other. Rather than fight that constraint, the new screen reads from a shared static capture point that the existing callback already populates &mdash; an additive change that needed no modification to code already proven to work.</p>
+</td></tr></table>
+
+<p style="margin:4pt 0;"></p>
+
+<table style="border-collapse:collapse; margin:10pt 0; width:100%;"><tr><td style="border-left:3pt solid #1e4d33; padding:6pt 0 6pt 12pt;">
+<p style="font-weight:bold; font-size:8pt; letter-spacing:1pt; text-transform:uppercase; color:#143726; margin:0 0 3pt;">PROBLEM FACED</p>
+<p style="margin:0;">The vendor application's own scan tab already had a working uploader to a server endpoint &mdash; the same endpoint the fixed checkpoint reader uses for its weighing decision. If that tab were ever left running on the handheld while it was carried around the factory, a stray identification could reach the server out of order and get weighed against the wrong bale entirely, silently corrupting a real result. I disabled that original uploader outright rather than rely on operators remembering not to open that tab &mdash; the new tagging screen does not depend on it, so nothing was lost.</p>
+</td></tr></table>
+
+<p style="margin:4pt 0;"></p>
+
+<table style="border-collapse:collapse; margin:10pt 0; width:100%;"><tr><td style="border-left:3pt solid #1e4d33; padding:6pt 0 6pt 12pt;">
+<p style="font-weight:bold; font-size:8pt; letter-spacing:1pt; text-transform:uppercase; color:#143726; margin:0 0 3pt;">PROBLEM FACED</p>
+<p style="margin:0;">The server's address was not configurable in the vendor's uploader at all &mdash; it had been compiled directly into the application as a literal string, inlined by the compiler into the disassembled bytecode itself rather than read from a settings value at run time. Correcting it meant editing the literal in two separate disassembled files and rebuilding, rather than changing a single configuration value.</p>
+</td></tr></table>
+
+<h3 style="font-family:Cambria; font-size:12pt; color:#7a4a23; margin:14pt 0 4pt;">Device behaviour worth recording</h3>
+<p>The handheld's Android <em>Back</em> button disconnects the reader hardware entirely and drops to a low-level reconnect screen &mdash; this is vendor behaviour, not something introduced by the patch, but it is not obvious until it happens. The application is also not debuggable in the ordinary sense and its launcher activity is not exported, both of which shaped how verification had to be done on-device rather than through the usual developer tooling.</p>
+
+<h3 style="font-family:Cambria; font-size:12pt; color:#7a4a23; margin:14pt 0 4pt;">Tools used</h3>
+<p>Apktool for decompiling resources and disassembling the application into readable smali bytecode and rebuilding the modified result; jadx for cross-referencing that disassembly against reconstructed Java source while working out exactly where the new feature needed to hook in; the Android SDK's own <code>zipalign</code> and <code>apksigner</code> for producing a properly aligned, signed, installable build from the rebuilt package; and a dedicated signing key generated specifically for this patched build, kept separate from any vendor or platform key.</p>
+
+<br clear="all" style="page-break-before:always">
+
+<!-- =============================================================== 8. PATH TO DEPLOYMENT -->
+<h1 style="font-family:Cambria; font-size:20pt; color:#143726; border-bottom:1.5pt solid #b9a06c; padding-bottom:4pt;">8&nbsp;&nbsp;Path to Full Deployment</h1>
+
+<p>The pilot line proves the approach works. Taking it from one line to the full seven-line, two-trunk design set out in Section&nbsp;4 is a matter of scope, not of unresolved risk &mdash; the validation logic, the hardware integration, and the alarm behaviour are already proven. What remains is genuinely new work, set out honestly below rather than glossed over.</p>
+
+<h3 style="font-family:Cambria; font-size:12pt; color:#7a4a23; margin:14pt 0 4pt;">Line identification at the server</h3>
+<p>The current server has no concept of which of several lines a reading came from, because the pilot only ever had one. At full scale, nine reader checkpoints will be reporting concurrently, and the server needs to know which line each reading belongs to so that two bales on two different lines can never be confused with one another. This is a contained change &mdash; an identifier travelling alongside each reading &mdash; but it touches the core matching logic described in Section&nbsp;7.1 and needs the same careful testing that logic already received.</p>
+
+<h3 style="font-family:Cambria; font-size:12pt; color:#7a4a23; margin:14pt 0 4pt;">Additional reader hardware</h3>
+<p>The pilot uses one reader unit. Full deployment needs checkpoint coverage at all seven lines and flag-check coverage at both trunks &mdash; nine antenna positions in total, which may be served by more than one physical reader unit depending on cable-run distances on the actual factory floor.</p>
+
+<h3 style="font-family:Cambria; font-size:12pt; color:#7a4a23; margin:14pt 0 4pt;">A floor-wide live view</h3>
+<p>The pilot's live page shows one line. A useful full-scale deployment should show all seven at a glance, so a shift supervisor can see the entire receiving floor's state without walking it.</p>
+
+<h3 style="font-family:Cambria; font-size:12pt; color:#7a4a23; margin:14pt 0 4pt;">Persistence</h3>
+<p>An in-memory record was the right choice for a single-line pilot. At full scale, with a shift's worth of records across nine checkpoints worth preserving past a server restart, a proper persistence layer becomes worth the added operational complexity.</p>
+
+<h3 style="font-family:Cambria; font-size:12pt; color:#7a4a23; margin:14pt 0 4pt;">Physical installation and commissioning</h3>
+<p>Each of the seven lines needs its checkpoint antenna and scale pairing physically installed and power-tuned for its own real spacing, the same tuning process described for the pilot in Section&nbsp;7.2. The two trunk antennas need the same, plus confirmation that the physical convergence point gives each trunk's antenna a clean read on every bale arriving from its three or four contributing lines.</p>
+
+<br clear="all" style="page-break-before:always">
+
+<!-- =============================================================== 9. APPENDIX -->
+<h1 style="font-family:Cambria; font-size:20pt; color:#143726; border-bottom:1.5pt solid #b9a06c; padding-bottom:4pt;">9&nbsp;&nbsp;Appendix &mdash; Glossary &amp; Reference Tables</h1>
+
+<h3 style="font-family:Cambria; font-size:12pt; color:#7a4a23; margin:14pt 0 4pt;">Status glossary</h3>
+<table style="width:100%; border-collapse:collapse; margin:6pt 0; font-size:10pt;">
+<tr><th style="text-align:left; border-bottom:1.5pt solid #b9a06c; padding:5pt; color:#7a4a23; font-size:8pt; text-transform:uppercase;">Status</th><th style="text-align:left; border-bottom:1.5pt solid #b9a06c; padding:5pt; color:#7a4a23; font-size:8pt; text-transform:uppercase;">Meaning</th></tr>
+<tr><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;"><span style="background:#6b5a44; color:#fbf7ec; padding:1pt 6pt; font-size:8pt; font-weight:bold;">ASSIGNED</span></td><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">Registered at the farm, not yet arrived at a checkpoint.</td></tr>
+<tr><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;"><span style="background:#8a6a1f; color:#fbf7ec; padding:1pt 6pt; font-size:8pt; font-weight:bold;">SCANNED</span></td><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">Identified at the checkpoint, awaiting a matching weight.</td></tr>
+<tr><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;"><span style="background:#2f6b45; color:#fbf7ec; padding:1pt 6pt; font-size:8pt; font-weight:bold;">VALIDATED</span></td><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">Measured weight agreed with the declared weight, within tolerance.</td></tr>
+<tr><td style="padding:5pt;"><span style="background:#8a3b28; color:#fbf7ec; padding:1pt 6pt; font-size:8pt; font-weight:bold;">FLAGGED</span></td><td style="padding:5pt;">A discrepancy was found; the bale is withdrawn for review.</td></tr>
+</table>
+
+<h3 style="font-family:Cambria; font-size:12pt; color:#7a4a23; margin:14pt 0 4pt;">Terms</h3>
+<table style="width:100%; border-collapse:collapse; margin:6pt 0; font-size:10pt;">
+<tr><th style="text-align:left; border-bottom:1.5pt solid #b9a06c; padding:5pt; color:#7a4a23; font-size:8pt; text-transform:uppercase;">Term</th><th style="text-align:left; border-bottom:1.5pt solid #b9a06c; padding:5pt; color:#7a4a23; font-size:8pt; text-transform:uppercase;">Meaning</th></tr>
+<tr><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">UHF RFID</td><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">Ultra-high-frequency radio identification &mdash; the passive tag technology used for every bale, readable at a distance without line of sight.</td></tr>
+<tr><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">EPC</td><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">Electronic Product Code &mdash; the identifier encoded on each bale's tag, unique per bale.</td></tr>
+<tr><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">TID</td><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">Tag Identifier &mdash; a second, chip-level identifier some readers report alongside the EPC; the system will match on either.</td></tr>
+<tr><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">Residual weight</td><td style="padding:5pt; border-bottom:0.5pt solid #d9c9a2;">The small reading a scale continues to report after a bale is lifted off it, from settling and debris; see Section&nbsp;7.1.</td></tr>
+<tr><td style="padding:5pt;">Antenna 1 / Antenna 3</td><td style="padding:5pt;">The checkpoint (weighing) and downstream (flag-check) roles respectively, named for the physical reader ports they occupy on the pilot line.</td></tr>
+</table>
+
+<p style="margin-top:30pt; padding-top:8pt; border-top:1.5pt double #b9a06c; font-size:9pt; color:#5c4a37;">MTS &mdash; Mkwawa Tracking System &nbsp;&middot;&nbsp; Prepared by Hemed Salum Kabangila</p>
+
+</body>
+</html>

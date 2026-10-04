@@ -1,0 +1,563 @@
+/* ==========================================================================
+   Typefaces — embedded locally (fonts/*.woff2) so this renders correctly
+   with no network connection in a briefing room.
+   ========================================================================== */
+
+@font-face {
+  font-family: "Fraunces";
+  font-style: normal; font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/fraunces_400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Fraunces";
+  font-style: normal; font-weight: 500;
+  font-display: swap;
+  src: url("../fonts/fraunces_500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Fraunces";
+  font-style: normal; font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/fraunces_600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Fraunces";
+  font-style: normal; font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/fraunces_700.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Fraunces";
+  font-style: italic; font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/fraunces_600i.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Public Sans";
+  font-style: normal; font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/pubsans_400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Public Sans";
+  font-style: italic; font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/pubsans_400i.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Public Sans";
+  font-style: normal; font-weight: 500;
+  font-display: swap;
+  src: url("../fonts/pubsans_500.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Public Sans";
+  font-style: normal; font-weight: 600;
+  font-display: swap;
+  src: url("../fonts/pubsans_600.woff2") format("woff2");
+}
+@font-face {
+  font-family: "Public Sans";
+  font-style: normal; font-weight: 700;
+  font-display: swap;
+  src: url("../fonts/pubsans_700.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal; font-weight: 400;
+  font-display: swap;
+  src: url("../fonts/plexmono_400.woff2") format("woff2");
+}
+@font-face {
+  font-family: "IBM Plex Mono";
+  font-style: normal; font-weight: 500;
+  font-display: swap;
+  src: url("../fonts/plexmono_500.woff2") format("woff2");
+}
+
+/* ==========================================================================
+   Tokens — one palette. Tobacco: cured-leaf brown and field green, on a
+   warm paper ground, with an antique brass rule for formality.
+   ========================================================================== */
+
+:root {
+  --paper: #f7f2e6;
+  --paper-2: #efe6d0;
+  --paper-3: #e8dcc0;
+  --ink: #241a10;
+  --ink-soft: #5c4a37;
+  --rule: #d9c9a2;
+  --rule-strong: #b9a06c;
+
+  --green: #1e4d33;
+  --green-deep: #143726;
+  --brown: #7a4a23;
+  --brown-deep: #5c3719;
+  --gold: #a9812e;
+  --gold-deep: #8a6a24;
+
+  --assigned: #6b5a44;
+  --scanned: #8a6a1f;
+  --validated: #2f6b45;
+  --flagged: #8a3b28;
+  --swatch-ink: #fbf7ec;
+
+  --font-display: "Fraunces", "Iowan Old Style", Georgia, serif;
+  --font-body: "Public Sans", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-mono: "IBM Plex Mono", "SF Mono", Consolas, monospace;
+
+  --shadow: 0 1px 2px rgba(36, 26, 16, 0.06), 0 8px 24px rgba(36, 26, 16, 0.05);
+}
+
+* { box-sizing: border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  background-image:
+    linear-gradient(var(--paper), var(--paper)),
+    repeating-linear-gradient(0deg, rgba(90, 66, 40, 0.018) 0px, rgba(90, 66, 40, 0.018) 1px, transparent 1px, transparent 3px);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 0 28px 120px;
+}
+
+/* ---------- running header ---------- */
+
+.topnav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--paper);
+  border-bottom: 1px solid var(--rule-strong);
+}
+.topnav::after {
+  content: "";
+  display: block;
+  height: 3px;
+  background: linear-gradient(90deg, var(--green) 0%, var(--gold) 50%, var(--brown) 100%);
+}
+
+.topnav-inner {
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 14px 28px;
+  display: flex;
+  align-items: baseline;
+  gap: 24px;
+}
+
+.topnav-brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: 0.03em;
+  color: var(--green);
+  flex-shrink: 0;
+}
+.topnav-brand .mark { width: 20px; height: 20px; flex-shrink: 0; }
+
+.topnav-links {
+  display: flex;
+  gap: 22px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.topnav-links a {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 13px;
+  letter-spacing: 0.02em;
+  text-decoration: none;
+  color: var(--ink-soft);
+  padding: 4px 0;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s ease, border-color 0.15s ease;
+}
+.topnav-links a:hover { color: var(--green); }
+.topnav-links a.is-active { color: var(--green); border-color: var(--gold); }
+
+/* ---------- masthead ---------- */
+
+header.hero {
+  margin: 52px 0 44px;
+  padding-bottom: 36px;
+  border-bottom: 3px double var(--rule-strong);
+}
+
+.masthead-logo {
+  display: block;
+  width: auto;
+  height: 68px;
+  margin-bottom: 28px;
+}
+
+.eyebrow {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 12.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--brown);
+  margin: 0 0 16px;
+}
+
+h1 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(32px, 5.4vw, 48px);
+  line-height: 1.1;
+  margin: 0 0 20px;
+  text-wrap: balance;
+  color: var(--ink);
+}
+
+.lede {
+  font-size: 18px;
+  line-height: 1.7;
+  color: var(--ink-soft);
+  max-width: 62ch;
+  margin: 0;
+}
+.lede em {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
+  color: var(--green);
+}
+
+/* ---------- sections ---------- */
+
+section { margin-bottom: 64px; scroll-margin-top: 76px; }
+
+.section-head {
+  display: flex;
+  align-items: baseline;
+  gap: 16px;
+  margin-bottom: 10px;
+}
+
+.section-number {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 600;
+  font-size: 20px;
+  color: var(--gold-deep);
+  flex-shrink: 0;
+}
+
+h2 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 27px;
+  margin: 0;
+  text-wrap: balance;
+  color: var(--ink);
+}
+
+.section-intro {
+  color: var(--ink-soft);
+  max-width: 66ch;
+  margin: 0 0 24px;
+  font-size: 15.5px;
+}
+
+.panel {
+  background: var(--paper-2);
+  border: 1px solid var(--rule-strong);
+  border-radius: 2px;
+  padding: 22px;
+  box-shadow: var(--shadow);
+}
+
+/* ---------- diagram chrome ---------- */
+
+.figure-label {
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 11.5px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--brown);
+  margin: 0 0 12px;
+}
+
+.diagram-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 14px;
+  margin-bottom: 12px;
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  color: var(--ink-soft);
+}
+
+.diagram-toolbar button {
+  border: 1px solid var(--rule-strong);
+  background: var(--paper);
+  color: var(--green);
+  font-size: 14px;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  line-height: 1;
+  transition: background 0.15s ease, border-color 0.15s ease;
+}
+.diagram-toolbar button:hover { background: var(--paper-3); border-color: var(--gold); }
+
+.diagram-viewport {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--rule-strong);
+  border-radius: 2px;
+  background: var(--paper);
+  height: 420px;
+  cursor: grab;
+  touch-action: none;
+}
+.diagram-viewport.is-grabbing { cursor: grabbing; }
+
+.diagram-viewport .pz-inner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform-origin: 0 0;
+  will-change: transform;
+}
+
+.diagram-viewport svg { display: block; }
+
+.diagram-hint {
+  font-size: 12px;
+  color: var(--ink-soft);
+  margin: 10px 0 0;
+  font-style: italic;
+  font-family: var(--font-body);
+}
+
+.diagram-panel.is-fullscreen {
+  position: fixed;
+  inset: 16px;
+  z-index: 50;
+  background: var(--paper-2);
+  box-shadow: 0 20px 60px rgba(36, 26, 16, 0.35);
+  padding: 22px;
+  overflow: auto;
+  border-radius: 4px;
+}
+.diagram-panel.is-fullscreen .diagram-viewport { height: calc(100vh - 150px); }
+
+figcaption, .caption {
+  font-size: 14px;
+  color: var(--ink-soft);
+  margin-top: 16px;
+  padding-top: 16px;
+  border-top: 1px solid var(--rule);
+}
+
+figure { margin: 0; }
+
+.detail-panel {
+  margin-top: 16px;
+  border-left: 3px solid var(--gold);
+  background: var(--paper-3);
+  border-radius: 2px;
+  padding: 14px 18px;
+  display: none;
+}
+.detail-panel.is-open { display: block; }
+.detail-panel h4 {
+  margin: 0 0 6px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 15.5px;
+  color: var(--green-deep);
+}
+.detail-panel p { margin: 0; font-size: 14.5px; color: var(--ink); }
+.detail-panel .close-detail {
+  float: right;
+  background: none;
+  border: none;
+  color: var(--ink-soft);
+  cursor: pointer;
+  font-family: var(--font-body);
+  font-size: 12px;
+}
+
+.diagram-viewport .clickable > rect,
+.diagram-viewport .clickable > polygon {
+  cursor: pointer;
+}
+
+/* ---------- status key ---------- */
+
+.key-row { display: flex; flex-wrap: wrap; gap: 12px; }
+.chip {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: var(--paper-2);
+  border: 1px solid var(--rule-strong);
+  border-radius: 2px;
+  padding: 12px 15px;
+  flex: 1 1 200px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, transform 0.1s ease;
+}
+.chip:hover { border-color: var(--gold); }
+.chip:active { transform: scale(0.99); }
+.chip .swatch { width: 11px; height: 11px; border-radius: 50%; flex-shrink: 0; }
+.chip .label {
+  font-family: var(--font-body);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--ink);
+}
+.chip .desc { font-size: 12.5px; color: var(--ink-soft); }
+.swatch.assigned { background: var(--assigned); }
+.swatch.scanned { background: var(--scanned); }
+.swatch.validated { background: var(--validated); }
+.swatch.flagged { background: var(--flagged); }
+
+/* ---------- sequence step accordion ---------- */
+
+.steps { display: flex; flex-direction: column; gap: 6px; margin-top: 18px; }
+.steps details {
+  border: 1px solid var(--rule-strong);
+  border-radius: 2px;
+  background: var(--paper);
+}
+.steps summary {
+  cursor: pointer;
+  padding: 11px 15px;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 13.5px;
+  color: var(--ink);
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.steps summary::-webkit-details-marker { display: none; }
+.steps summary::before {
+  content: "+";
+  color: var(--gold-deep);
+  font-weight: 700;
+  width: 12px;
+}
+.steps details[open] summary::before { content: "\2212"; }
+.steps .step-body {
+  padding: 0 15px 15px 39px;
+  font-size: 13.5px;
+  color: var(--ink-soft);
+}
+
+/* ---------- callout ---------- */
+
+.callout {
+  border-left: 3px solid var(--brown);
+  padding: 6px 0 6px 18px;
+  color: var(--ink-soft);
+  font-size: 15px;
+  margin-top: 20px;
+}
+.callout strong { color: var(--ink); font-family: var(--font-display); font-weight: 600; }
+
+/* ---------- reference table ---------- */
+
+table { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+th, td { text-align: left; padding: 11px 12px; border-bottom: 1px solid var(--rule); vertical-align: top; }
+th {
+  font-family: var(--font-body);
+  font-size: 11.5px;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  color: var(--brown);
+  font-weight: 700;
+  border-bottom: 2px solid var(--rule-strong);
+}
+td code, .lede code, .section-intro code, li code {
+  font-family: var(--font-mono);
+  background: var(--paper-3);
+  padding: 1px 6px;
+  border-radius: 2px;
+  font-size: 0.88em;
+  color: var(--green-deep);
+}
+tr:last-child td { border-bottom: none; }
+tr.is-flashed { animation: flash 1.2s ease; }
+@keyframes flash {
+  0% { background: var(--gold); background: color-mix(in srgb, var(--gold) 30%, transparent); }
+  100% { background: transparent; }
+}
+
+.status-pill {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-family: var(--font-body);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  color: var(--swatch-ink);
+}
+.status-pill.assigned { background: var(--assigned); }
+.status-pill.scanned { background: var(--scanned); }
+.status-pill.validated { background: var(--validated); }
+.status-pill.flagged { background: var(--flagged); }
+
+footer {
+  margin-top: 72px;
+  padding-top: 28px;
+  border-top: 3px double var(--rule-strong);
+  font-size: 13.5px;
+  color: var(--ink-soft);
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+footer a { color: var(--green); font-weight: 600; text-decoration: none; border-bottom: 1px solid var(--rule-strong); }
+footer a:hover { border-color: var(--gold); }
+
+a { color: var(--green); }
+a:focus-visible, button:focus-visible, .chip:focus-visible, summary:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  * { transition: none !important; animation: none !important; }
+}
+
+@media (max-width: 640px) {
+  .page { padding: 0 18px 80px; }
+  h1 { font-size: 30px; }
+  .topnav-inner { flex-wrap: wrap; gap: 10px 20px; }
+  .diagram-viewport { height: 320px; }
+  .section-head { flex-wrap: wrap; }
+}

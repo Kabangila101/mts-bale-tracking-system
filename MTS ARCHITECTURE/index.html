@@ -1,0 +1,295 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MTS — System Architecture &amp; Process Overview</title>
+<link rel="icon" type="image/png" href="img/mkwawa-leaf.png">
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<nav class="topnav">
+  <div class="topnav-inner">
+    <span class="topnav-brand">
+      <img class="mark" src="img/mkwawa-leaf.png" alt="" width="20" height="20">
+      MTS
+    </span>
+    <div class="topnav-links">
+      <a href="#key">Status Key</a>
+      <a href="#journey">Process</a>
+      <a href="#architecture">Architecture</a>
+      <a href="#messages">Protocol</a>
+      <a href="#reference">Reference</a>
+    </div>
+  </div>
+</nav>
+
+<div class="page">
+
+  <header class="hero">
+    <img class="masthead-logo" src="img/mkwawa-wordmark.png" alt="Mkwawa Leaf Tobacco Limited">
+    <p class="eyebrow">Ministry Briefing &middot; System Architecture &amp; Process Overview</p>
+    <h1>How MTS Safeguards Every Bale of Tobacco</h1>
+    <p class="lede">
+      MTS is a traceability and quality-assurance system for tobacco leaving
+      the processing floor. Every bale is registered against its declared
+      weight and grade, automatically re-weighed at a checkpoint, and  if
+      the two figures disagree — <em>flagged and set aside</em> before it can
+      proceed. This document sets out exactly how that assurance works: the
+      process a bale moves through, the systems that carry it out, and the
+      precise exchanges between them.
+    </p>
+  </header>
+
+  <section id="key">
+    <div class="section-head">
+      <span class="section-number">I.</span>
+      <h2>Status Key</h2>
+    </div>
+    <p class="section-intro">
+      Every bale carries exactly one of four statuses at any moment. These
+      colours recur throughout this document — select one to locate it in
+      the reference table.
+    </p>
+    <div class="key-row">
+      <div class="chip" data-status="assigned" tabindex="0"><span class="swatch assigned"></span><span class="label">ASSIGNED</span><span class="desc">Registered at intake, not yet at the checkpoint</span></div>
+      <div class="chip" data-status="scanned" tabindex="0"><span class="swatch scanned"></span><span class="label">SCANNED</span><span class="desc">Identified at the checkpoint, awaiting a weight</span></div>
+      <div class="chip" data-status="validated" tabindex="0"><span class="swatch validated"></span><span class="label">VALIDATED</span><span class="desc">Measured weight agrees with the declared weight</span></div>
+      <div class="chip" data-status="flagged" tabindex="0"><span class="swatch flagged"></span><span class="label">FLAGGED</span><span class="desc">Discrepancy found — set aside for review</span></div>
+    </div>
+  </section>
+
+  <section id="journey">
+    <div class="section-head">
+      <span class="section-number">II.</span>
+      <h2>The Process</h2>
+    </div>
+    <p class="section-intro">
+      The path a single bale follows, from arrival to final disposition.
+      Select any step in the figure below for further detail.
+    </p>
+    <div class="panel diagram-panel" id="panel-journey">
+      <p class="figure-label">Figure 1 &middot; The Bale Journey</p>
+      <div class="diagram-toolbar">
+        <span>Pan &amp; zoom</span>
+        <button id="zoom-out-journey" aria-label="Zoom out">&minus;</button>
+        <button id="zoom-reset-journey" aria-label="Reset view">&#8635;</button>
+        <button id="zoom-in-journey" aria-label="Zoom in">+</button>
+        <button id="fullscreen-journey" aria-label="Toggle fullscreen">&#10530;</button>
+      </div>
+      <figure>
+        <div class="diagram-viewport" id="viewport-journey">
+          <div class="pz-inner"></div>
+        </div>
+        <p class="diagram-hint">Drag to pan, scroll to zoom, and select a step for its detail.</p>
+        <div class="detail-panel" id="detail-journey">
+          <button class="close-detail" type="button" onclick="mtsCloseDetail('journey')">Close &times;</button>
+          <h4></h4>
+          <p></p>
+        </div>
+        <figcaption>
+          A bale moves forward through these three stages only — it is never
+          reprocessed backward. The two checkpoints shown (Antenna 1 and
+          Antenna 3) are physically separate stations on the same production
+          line.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="architecture">
+    <div class="section-head">
+      <span class="section-number">III.</span>
+      <h2>System Architecture</h2>
+    </div>
+    <p class="section-intro">
+      Three independent systems, plus one item of scale hardware, are
+      coordinated through a single central server. Solid lines denote a
+      request; the dashed line denotes the server's reply. Select any
+      component for further detail.
+    </p>
+    <div class="panel diagram-panel" id="panel-architecture">
+      <p class="figure-label">Figure 2 &middot; System Architecture</p>
+      <div class="diagram-toolbar">
+        <span>Pan &amp; zoom</span>
+        <button id="zoom-out-architecture" aria-label="Zoom out">&minus;</button>
+        <button id="zoom-reset-architecture" aria-label="Reset view">&#8635;</button>
+        <button id="zoom-in-architecture" aria-label="Zoom in">+</button>
+        <button id="fullscreen-architecture" aria-label="Toggle fullscreen">&#10530;</button>
+      </div>
+      <figure>
+        <div class="diagram-viewport" id="viewport-architecture">
+          <div class="pz-inner"></div>
+        </div>
+        <p class="diagram-hint">Drag to pan, scroll to zoom, and select a component for its detail.</p>
+        <div class="detail-panel" id="detail-architecture">
+          <button class="close-detail" type="button" onclick="mtsCloseDetail('architecture')">Close &times;</button>
+          <h4></h4>
+          <p></p>
+        </div>
+        <figcaption>
+          The handheld intake device and the fixed checkpoint reader are two
+          separate applications on two separate devices; neither communicates
+          with the other directly. Both report to the same central server,
+          which is the sole holder of record. The downstream check is
+          deliberately read-only, so it cannot interfere with the
+          checkpoint's own weighing process.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section id="messages">
+    <div class="section-head">
+      <span class="section-number">IV.</span>
+      <h2>Message Protocol</h2>
+    </div>
+    <p class="section-intro">
+      The complete exchange of messages a single bale generates, from
+      registration to the final alarm decision, in the order they occur.
+      Expand any step below for further explanation.
+    </p>
+    <div class="panel diagram-panel" id="panel-messages">
+      <p class="figure-label">Figure 3 &middot; Message Sequence</p>
+      <div class="diagram-toolbar">
+        <span>Pan &amp; zoom</span>
+        <button id="zoom-out-messages" aria-label="Zoom out">&minus;</button>
+        <button id="zoom-reset-messages" aria-label="Reset view">&#8635;</button>
+        <button id="zoom-in-messages" aria-label="Zoom in">+</button>
+        <button id="fullscreen-messages" aria-label="Toggle fullscreen">&#10530;</button>
+      </div>
+      <figure>
+        <div class="diagram-viewport" id="viewport-messages">
+          <div class="pz-inner"></div>
+        </div>
+        <p class="diagram-hint">Drag to pan, scroll to zoom.</p>
+        <figcaption>
+          Two points are worth noting. First, the scale is never directly
+          queried — it reports continuously, and the server itself
+          determines which bale a given reading belongs to. Second, the
+          alarm decision rests entirely with the server; the downstream
+          reader only relays a yes-or-no answer.
+        </figcaption>
+      </figure>
+
+      <div class="steps">
+        <details>
+          <summary>1 &middot; Bale is registered</summary>
+          <div class="step-body">The bale number, grade, truck, farm, farmer and declared weight are submitted to the server, which records the bale and returns confirmation.</div>
+        </details>
+        <details>
+          <summary>2 &middot; Checkpoint identifies the bale</summary>
+          <div class="step-body">The fixed reader (Antenna 1) reports the bale's identifier. The server marks it as identified and opens a short window in which to receive a weight.</div>
+        </details>
+        <details>
+          <summary>3 &middot; The scale reports weight</summary>
+          <div class="step-body">No request is made of the scale — it streams continuously. The server's monitoring process removes any residual weight left on the platform and matches a stable reading to the most recently identified bale.</div>
+        </details>
+        <details>
+          <summary>4 &middot; Server determines the outcome</summary>
+          <div class="step-body">The measured weight is compared with the declared weight against a fixed tolerance. The bale's final status — and, where applicable, a stated reason — is recorded.</div>
+        </details>
+        <details>
+          <summary>5 &middot; Downstream reader checks the outcome</summary>
+          <div class="step-body">A read-only enquiry is made of the server. This step cannot alter the bale's record, so it cannot interfere with the checkpoint's own process.</div>
+        </details>
+        <details>
+          <summary>6 &middot; Alarm decision</summary>
+          <div class="step-body">If the outcome was a discrepancy, the reader's alarm sounds briefly so the bale can be withdrawn. Any other outcome produces no response at all.</div>
+        </details>
+      </div>
+    </div>
+
+    <div class="callout">
+      <strong>A note on reliability.</strong> A stationary bale is read
+      repeatedly by an always-on antenna, roughly every three seconds. Two
+      safeguards prevent this from repeatedly re-triggering the weighing
+      process: the residual measurement is only updated while no bale is
+      expected, and is held fixed the instant a new bale is identified — and
+      once a bale has an outcome, a further reading within ten seconds is
+      treated as the same bale still present, not a new arrival. The figure
+      below illustrates that safeguard's own state.
+    </div>
+
+    <div class="panel diagram-panel" id="panel-residual" style="margin-top:20px;">
+      <p class="figure-label">Figure 4 &middot; Residual-Weight Safeguard</p>
+      <div class="diagram-toolbar">
+        <span>Pan &amp; zoom</span>
+        <button id="zoom-out-residual" aria-label="Zoom out">&minus;</button>
+        <button id="zoom-reset-residual" aria-label="Reset view">&#8635;</button>
+        <button id="zoom-in-residual" aria-label="Zoom in">+</button>
+        <button id="fullscreen-residual" aria-label="Toggle fullscreen">&#10530;</button>
+      </div>
+      <figure>
+        <div class="diagram-viewport" id="viewport-residual" style="height:260px;">
+          <div class="pz-inner"></div>
+        </div>
+        <p class="diagram-hint">Drag to pan, scroll to zoom.</p>
+      </figure>
+    </div>
+  </section>
+
+  <section id="reference">
+    <div class="section-head">
+      <span class="section-number">V.</span>
+      <h2>Reference</h2>
+    </div>
+    <p class="section-intro">A concordance of each status and mechanism with its implementation.</p>
+    <div class="panel">
+      <table>
+        <thead>
+          <tr><th>Concept</th><th>Status</th><th>Implementation</th></tr>
+        </thead>
+        <tbody>
+          <tr data-status="assigned">
+            <td>Bale registered, not yet at the checkpoint</td>
+            <td><span class="status-pill assigned">ASSIGNED</span></td>
+            <td><code>models.assign_tag()</code></td>
+          </tr>
+          <tr data-status="scanned">
+            <td>Identified at the checkpoint, weighing window open</td>
+            <td><span class="status-pill scanned">SCANNED</span></td>
+            <td><code>models.record_scan()</code></td>
+          </tr>
+          <tr data-status="validated">
+            <td>Measured weight agrees within tolerance</td>
+            <td><span class="status-pill validated">VALIDATED</span></td>
+            <td><code>models.record_weight()</code></td>
+          </tr>
+          <tr data-status="flagged">
+            <td>Discrepancy found — set aside for review</td>
+            <td><span class="status-pill flagged">FLAGGED</span></td>
+            <td><code>models.record_weight()</code></td>
+          </tr>
+          <tr>
+            <td>Live weight reading from the scale</td>
+            <td>&mdash;</td>
+            <td><code>scale.py</code></td>
+          </tr>
+          <tr>
+            <td>Routes a reading to the correct checkpoint process</td>
+            <td>&mdash;</td>
+            <td><code>AntennaDispatcher.java</code></td>
+          </tr>
+          <tr>
+            <td>Intake registration screen (handheld device)</td>
+            <td>&mdash;</td>
+            <td><code>AssignActivity.java</code></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <footer>
+    <span>MTS &middot; System Architecture &amp; Process Overview</span>
+    <a href="https://github.com/Kabangila101/mts-bale-tracking-system">Full source &amp; documentation &rarr;</a>
+  </footer>
+
+</div>
+
+<script src="js/mermaid.min.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
